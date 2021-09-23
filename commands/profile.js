@@ -13,7 +13,9 @@ module.exports = {
         let targetID
         let targetAvatar
         let targetName
+        
         if (interaction.options.getUser('target') == null){
+            //if the user hasn't specified a target, set the user as the target
             targetID = interaction.user.id
             targetAvatar = interaction.user.displayAvatarURL()
             targetName = interaction.user.username
@@ -22,19 +24,38 @@ module.exports = {
             targetAvatar = interaction.options.getUser('target').displayAvatarURL()
             targetName = interaction.options.getUser('target').username
         }
+        
+        //obtain the target's user record from the database
         const targetUser = await userRecords.findOne({where: {userID: targetID}})
+        
+        //check to see if the target user has a profile
         if (targetUser == null){
             interaction.reply("This user does not have a profile.")
             return
         }
+        
+        //fetch all the badges that the target user owns and that they have set as visible
         const targetUserBadgeInventory = await inventoryRecords.findAll({where: {userID: targetID, showOnProfile: 1}})
+        
+        //this string will be the title of the field that contains the badges
         let badgeString = ''
+        
         for (let i = 0; i < targetUserBadgeInventory.length; i++) {
+            //obtain the badge's item record
             badge = await itemRecords.findOne({where: {itemID: targetUserBadgeInventory[i].get("itemID")}})
+            //add the badge's emoji string to the badge string
             badgeString += badge.get("emojiString")
         };
+        //embed colour logic
         let profileColour
-        if (targetUser.get('embedColour') == null) {
+        if (targetUser.get('embedColour') == null) { //check to see if the user has set an embed colour
+            /**
+            * The below code determines what colour the embed should be dependant on the user's level
+            * For users under level 100, it should be light grey
+            * For users between level 100-199, it should be a bronze colour
+            * For users between level 200-399, it should be a silver colour
+            * For users above level 400, it should be a gold colour
+            */
             if (targetUser.get('level') < 100){
                 profileColour = 'LIGHT_GREY'
             } else if (targetUser.get('level') < 200){
@@ -45,6 +66,7 @@ module.exports = {
                 profileColour = [221, 224, 0]
             };
         } else {
+            //if a user has set their embed colour, just get the hex string from the database
             profileColour = `#${targetUser.get('embedColour')}`
         }
         const embed = new MessageEmbed()
@@ -56,29 +78,43 @@ module.exports = {
                 {name: "Credits:", value: `${targetUser.get('money')} credits`}
             )
             .setThumbnail(`${targetAvatar}`)
+        
+            //logic for displaying the user's custom message (if one is set)
         if (targetUser.get('message') != null){
             embed.setDescription(`${targetUser.get('message')}`)
         };
+
+        //logic for displaying the user's next daily handout
         let timeRemainingSecs
+        
+        //calculate how many seconds until the user is entitled to a daily handout
         if (targetUser.get('lastdaily') != null){
             timeRemainingSecs = (targetUser.get('lastdaily') + 86400) -  Math.floor(Date.now() / 1000)
         } else {
             timeRemainingSecs = 0
         };
+        
+        //if the user's daily handout is available, display this
         if (timeRemainingSecs <= 0) {
-            embed.addFields({name: "Daily Reset Timer:", value: "Daily is available!"})
+            embed.addFields({name: "Daily Reset:", value: "Daily is available!"})
         } else {
-            var hours = Math.floor(timeRemainingSecs / 60 / 60);
-            var minutes = Math.floor(timeRemainingSecs / 60) - (hours * 60);
-            var seconds = timeRemainingSecs % 60;
-            var timeRemainingString = String(hours).padStart(2, "0") + ":" + String(minutes).padStart(2, "0") + ':' + String(seconds).padStart(2, "0")
-            embed.addFields({name: "Daily Reset Timer:", value: `${timeRemainingString} remaining`})
+            //otherwise, display a timestamp representing the time at which they can claim their daily handout again
+            const nextDailyEpochStamp = Math.floor(Date.now() /1000) + timeRemainingSecs
+            embed.addFields({name: "Daily Reset:", value: `Next daily reset at <t:${nextDailyEpochStamp}>`})
         };
+        
+        //logic for displaying badges (if they have any)
         if (badgeString != ''){
+            /**
+             * The badges are displayed in the title, not the value due to the fact that you must have both and the gap bothered me
+             * However I can't just leave out a field because Discord's API does not like that
+             * My patchwork solution is to just set the value of the field to a zero-width space
+             */
             embed.addFields({
                 name: badgeString, value: "​"
             })
         };
+        //reply to the command with the embed
         await interaction.reply({embeds: [embed]});
     },
 };

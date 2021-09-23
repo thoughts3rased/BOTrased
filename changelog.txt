@@ -23,6 +23,7 @@ This should work better and allow for BOTrased to be more up to date with newer 
 + svsettings, now called serversettings, is now a group containing all the different options regarding it.
 + A custom profile colour will now override the default level-dependant colour
 - Leaderboards are no longer cached in the background, mimicking old behaviour and providing up to date leaderboards
++ All daily timers will now display a timestamp instead of a numerical counter
 
 **__MISC CHANGES:__**
 - Users no longer accumulate exp and credits from invoking commands

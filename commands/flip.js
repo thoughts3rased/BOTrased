@@ -7,6 +7,8 @@ module.exports = {
     async execute(interaction) {
         if (Math.random() > 0.5){
             interaction.reply(`<:heads:809568187707817994>`)
+            //wait 50ms to ensure this message sends afterwards
+            //will probably replace this with either a followup or an edit later on, this works for now
             setTimeout(function(){
                 interaction.channel.send("You got **heads**.")
             }, 50)

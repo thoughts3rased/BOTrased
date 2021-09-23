@@ -194,9 +194,12 @@ client.on('interactionCreate', async interaction => {
 
     const command = client.commands.get(interaction.commandName);
 
+    //command usage counting logic 
     if (await commandRecords.findOne({where: {command: command.data.name}}) == null){
+        //if a record for this command can't be found, create it
         await commandRecords.create({command: command.data.name, count: 1})
     } else {
+        //otherwise, just increment the existing record
         await commandRecords.increment('count', {where: {command: command.data.name}})
     };
 
@@ -213,16 +216,25 @@ client.on('messageCreate', async message => {
     if (message.author.bot){
         return
     };
+    //get the message author's profile, and if it can't be found create it
     var [user, created] = await userRecords.findOrCreate({where: {userID: message.author.id}, defaults: {userID: message.author.id}})
+    //get the server's entry in the database, and if it can't be found create it
     const [server, recordCreated] = await serverRecords.findOrCreate({where: {serverID: message.guild.id}, defaults: {serverID: message.guild.id}})
+    
+    //calculate credit and exp handout amounts and update their respective records
     const expAmount =  Math.floor(Math.random() * 3)
     const creditAmount = Math.floor(Math.random() * 5)
     await user.increment('exp', {by: expAmount, where: {userID: message.author.id}})
     await user.increment('money', {by: creditAmount, where: {userID: message.author.id}})
+    
+    //obtain updated record for target user
     user = await userRecords.findOne({where: {userID: message.author.id}})
+    
+    //level up checking logic
     if (Math.floor(user.get('exp') / 100) > user.get('level')){
-        console.log(`${server.get('levelUpMessage')}\n${user.get('levelUpMessage')}`)
         await user.update({level: Math.floor(user.get('exp') / 100)}, {where: {userID: message.author.id}})
+        
+        //if both the user and server's level up message toggles are both enabled, send a level up message. 
         if (server.get('levelUpMessage') == 1 && user.get('levelUpMessage') == 1){
             await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(user.get('exp') / 100)}!`)
         }

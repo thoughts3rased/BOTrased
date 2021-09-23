@@ -42,6 +42,10 @@ module.exports = {
                 .setName("show")
                 .setDescription("Shows your current setting configuration.")),
     async execute(interaction) {
+        /**
+         * Since all subcommands here deal with the author's user record, it's best to just get this done with a single line outside of the switch case
+         * Even if a specific subcommand doesn't use it, it saves me repeating this line over and over
+         */
         const userRecord = await userRecords.findOne({where: {userID: interaction.user.id}})
         switch(interaction.options.getSubcommand()){
             case "userlevelupmessage":

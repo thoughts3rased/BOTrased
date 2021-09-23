@@ -22,5 +22,6 @@ module.exports = {
             )
         ;
         await interaction.reply({embeds: [embed]});
+        //note to future self: don't add ping or any other sort of diagnostic data. This should be in a status command of some sort.
     },
 };

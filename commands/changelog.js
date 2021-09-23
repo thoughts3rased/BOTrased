@@ -16,8 +16,10 @@ module.exports = {
             crlfDelay: Infinity
         });
         var i = 0
+        //this should split each file of the changelog onto its own line
         for await (const line of rl){
             if (i === 0){
+                //we want the first line to be the title of the embed, with the rest being in the embed's description
                 embedTitle = line
             } else{
                 embedBody += line + "\n"
