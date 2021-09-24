@@ -4,6 +4,7 @@ const { Client , Collection, Intents, Permissions } = require("discord.js");
 const statusMessages = require("./status-messages.json")
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+global.errorCount = 0
 
 global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, 'BOTrased', process.env.DATABASE_PASSWORD, {
     host: 'maccraft.serveminecraft.net',
@@ -209,6 +210,7 @@ client.on('interactionCreate', async interaction => {
         await command.execute(interaction);
     } catch (error) {
         await interaction.reply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`);
+        errorCount++
     }
 })
 
