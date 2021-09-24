@@ -6,20 +6,22 @@ module.exports = {
         .setName('status')
         .setDescription('View technical information about BOTrased.'),
     async execute(interaction) {
-        let dbStatus
+        var dbStatus = ""
         await sequelize.authenticate().then(() => {
-          this.dbStatus = true;
+          dbStatus = true;
         })
         .catch(err => {
-          this.dbStatus = false;
+          dbStatus = false;
         });
         const connectionDict = {true: "Online", false: "Unavailable"}
         const embed = new MessageEmbed()
             .setTitle("Technical information about BOTrased")
             .setThumbnail(interaction.client.user.avatarURL())
             .addFields(
-                {name: "Ping", value: `${interacion.client.ws.ping}ms.`},
-                {name: "Database Status:", value: connectionDict[dbStatus]}
+                {name: "Ping:", value: `${interaction.client.ws.ping}ms`},
+                {name: "Database Status:", value: `${connectionDict[dbStatus]}`},
+                {name: "Errors Encountered Since Boot:", value: `${errorCount}`}
             );
+      await interaction.reply({embeds: [embed]})
     },
 };
