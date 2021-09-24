@@ -1,4 +1,4 @@
-Changelog for XX/XX/XXXX (DD/MM/YYYY) - V 2.0.0 JAVA EDITION
+Changelog for 24/09/2021 (DD/MM/YYYY) - V 2.0.0 JAVA EDITION
 
 **__FEATURED CHANGES:__**
 *Goodbye Python!*
@@ -12,6 +12,7 @@ This should work better and allow for BOTrased to be more up to date with newer 
 
 **__NEW COMMANDS:__**
 + /usersettings added, containing `levelupmessage`, `profilemessage`, `clearprofilemessage`, `show` and `embedcolour`
++ /status added, giving you technical information about BOTrased
 
 **__COMMAND CHANGES:__**
 - The /weather command has been removed due to the lack of an OpenWeatherMap API wrapper for Node.js
