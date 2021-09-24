@@ -204,7 +204,12 @@ client.once('ready', () => {
             "Peek at my insides on github!",
             "Now supports slash commands!",
             `Currently serving ${client.guilds.cache.size} servers!`,
-            "No help command required."
+            "No help command required.",
+            "Bleep-bloop-blop",
+            "I have a little brother called TESTrased!",
+            "Check the changelog with /changelog!",
+            "Have you remembered to use /daily today?",
+            "Got any servers you'd like to add me to?"
         ]
         // generate random number between 1 and list length.
         const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1);
