@@ -1,10 +1,13 @@
 const fs = require('fs');
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
 const { Client , Collection, Intents, Permissions } = require("discord.js");
+const { AutoPoster } = require('topgg-autoposter');
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 global.errorCount = 0
+
+const poster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
 global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, 'BOTrased', process.env.DATABASE_PASSWORD, {
     host: 'maccraft.serveminecraft.net',
