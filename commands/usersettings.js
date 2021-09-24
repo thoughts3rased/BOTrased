@@ -40,7 +40,16 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName("show")
-                .setDescription("Shows your current setting configuration.")),
+                .setDescription("Shows your current setting configuration."))
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName("displaybadge")
+            .setDescription("Toggle whether a badge is displayed on your profile or not.")
+            .addIntegerOption(option =>
+                    option
+                        .setName("itemid")
+                        .setDescription("The item ID of the badge you want to make visible (use /inventory to get this).")
+                        .setRequired(true))),
     async execute(interaction) {
         /**
          * Since all subcommands here deal with the author's user record, it's best to just get this done with a single line outside of the switch case
@@ -86,6 +95,22 @@ module.exports = {
                     )
                 }
                 await interaction.reply({embeds: [embed]})
+                break;
+            case "displaybadge":
+                const userInventory = await inventoryRecords.findOne({where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
+                const targetBadge = await itemRecords.findOne({where: {itemID: interaction.options.getInteger("itemid"), type: "badge"}})
+                if (!userInventory){
+                    return await interaction.reply("You do not own this item.")
+                }
+                if(!targetBadge){
+                    return await interaction.reply("Invalid badge selected.")
+                }
+                if (userInventory.get("showOnProfile") == 1){
+                    await userInventory.update({showOnProfile: 0}, {where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
+                    return await interaction.reply(`Your ${targetBadge.get("name")} has been hidden from your profile.`)
+                }
+                await userInventory.update({showOnProfile: 1}, {where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
+                return await interaction.reply(`Your ${targetBadge.get("name")} will now be shown on your profile.`)
             ;
         }
     },

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Sequelize = require('sequelize')
 const { Client , Collection, Intents, Permissions } = require("discord.js");
-const statusMessages = require("./status-messages.json")
+
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 global.errorCount = 0
@@ -175,6 +175,10 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
+    //set a presence showing that the bot is booting.
+    client.user.setPresence({ activities: [{ name: 'Initialising...' }], status: 'idle' });
+    
+    //sync and initialise all table models
     userRecords.sync()
     console.log("User table synchronised and online.")
     serverRecords.sync()
@@ -187,8 +191,33 @@ client.once('ready', () => {
     console.log("Item table synced and online.")
     commandRecords.sync()
     console.log("Command Usage table synced and online.")
-    console.log(`Ready. Logged in as ${client.user.username}`);
-});
+    console.log(`Ready. Logged in as ${client.user.username}`)
+    
+    //set status showing that the bot has finished booting
+    client.user.setPresence({ activities: [{ name: 'Ready.' }], status: 'online' });
+
+    setInterval(() => {
+        //these are the status messages that the bot will randomly pick from and cycle through
+        const statusMessages = [
+            "Now in JavaScript!",
+            "Living to fight another day.",
+            "Prefixes be gone!",
+            "Peek at my insides on github!",
+            "Now supports slash commands!",
+            `Currently serving ${client.guilds.cache.size} servers!`,
+            "No help command required.",
+            "Bleep-bloop-blop",
+            "I have a little brother called TESTrased!",
+            "Check the changelog with /changelog!",
+            "Have you remembered to use /daily today?",
+            "Got any servers you'd like to add me to?"
+        ]
+        // generate random number between 1 and list length.
+        const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1);
+        client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: 'online'});
+      }, 120000);
+    });
+
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
