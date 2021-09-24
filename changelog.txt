@@ -27,6 +27,7 @@ This should work better and allow for BOTrased to be more up to date with newer 
 
 **__MISC CHANGES:__**
 - Users no longer accumulate exp and credits from invoking commands
++ BOTrased will now give you a full error report in the event that it encounters an unexpected error
 
 **__SILENT CHANGES:__**
 + All vulnerable database credentials are now stored as environment variables, increasing security.

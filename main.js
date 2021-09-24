@@ -208,7 +208,8 @@ client.on('interactionCreate', async interaction => {
     try{
         await command.execute(interaction);
     } catch (error) {
-        console.error(error);
+        await interaction.reply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`)
+        ;
     }
 })
 
