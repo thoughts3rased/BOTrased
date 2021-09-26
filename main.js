@@ -241,7 +241,10 @@ client.on('interactionCreate', async interaction => {
     try{
         await command.execute(interaction);
     } catch (error) {
-        await interaction.reply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`);
+        if (!interaction.deferred){
+            await interaction.deferReply()
+        }
+        await interaction.editReply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`);
         errorCount++
     }
 })
