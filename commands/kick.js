@@ -41,9 +41,10 @@ module.exports = {
                             {name: "Warned by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
                         );
         try{
-            await interaction.getMember('target').kick()
+            await interaction.options.getMember('target').kick()
             await interaction.editReply("Kick successful.")
         } catch (error){
+            console.log(error.stack)
             return await interaction.editReply("Sorry, I had an issue with kicking that member. Please try again.")
         }
         try{
