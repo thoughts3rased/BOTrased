@@ -34,7 +34,7 @@ module.exports = {
         };
         const embed = new MessageEmbed()
                         .setColor("RED")
-                        .setTitle(`You have been banned from ${interaction.guild.name}!`)
+                        .setTitle(`You have been permanently banned from ${interaction.guild.name}!`)
                         .setThumbnail("https://i.imgur.com/HBYFM4H.png")
                         .addFields(
                             {name: "Reason:", value: reason},
