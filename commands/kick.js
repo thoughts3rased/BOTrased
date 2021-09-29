@@ -38,7 +38,7 @@ module.exports = {
                         .setThumbnail("https://i.imgur.com/XpWbrhp.png")
                         .addFields(
                             {name: "Reason:", value: reason},
-                            {name: "Warned by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
+                            {name: "Kicked by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
                         );
         try{
             await interaction.options.getMember('target').kick()
@@ -55,7 +55,7 @@ module.exports = {
             await interaction.followUp("There was an issue sending this user their kick message.");
         }
         try{
-            const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser('target').id, adminID: interaction.user.id, type: "warn", reason: interaction.options.getString('reason'), time: Math.floor(Date.now() /1000), botUsed: true});
+            const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser('target').id, adminID: interaction.user.id, type: "kick", reason: interaction.options.getString('reason'), time: Math.floor(Date.now() /1000), botUsed: true});
             await interaction.followUp(`Kick entry created.`);
         } catch(error){
             console.log(error.stack)
