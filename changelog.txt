@@ -5,7 +5,8 @@ Changelog for XX/XX/XXXX (DD/MM/YYYY) - V 2.1.0
 
 
 **__NEW COMMANDS:__**
-
+/kick re-added
+/warn re-added
 
 **__COMMAND CHANGES:__**
 
