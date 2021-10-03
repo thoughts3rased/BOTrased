@@ -1,6 +1,7 @@
 const fs = require('fs');
 const Sequelize = require('sequelize')
 const { Client , Collection, Intents, Permissions } = require("discord.js");
+const io = require('@pm2/io')
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
@@ -12,6 +13,28 @@ global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, 'BOTrased', proces
     dialect: "mysql",
     logging: false
 });
+
+//defining of PM2 metrics
+const commandsServed = io.counter({
+    name: "Commands served since last boot",
+    unit: "commands"
+})
+const commandsPerMinute = io.meter({
+    name: "Commands served in the last minute",
+    unit: "commands"
+})
+const pm2ServerCount = io.metric({
+    name: "Servers joined",
+    unit: "servers"
+})
+const messagesRead = io.metric({
+    name: "Messages read since last boot",
+    unit: "messages"
+})
+const messagesPerMinute = io.meter({
+    name: "Messages read in the last minute",
+    unit: "messages"
+})
 
 global.userRecords = sequelize.define('users', {
     userID: {
@@ -217,6 +240,9 @@ client.once('ready', () => {
         client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: 'online'});
       }, 120000);
     });
+    setInterval(() => {
+        pm2ServerCount.set(client.guilds.cache.size)
+    })
 
 
 client.on('interactionCreate', async interaction => {
@@ -232,6 +258,8 @@ client.on('interactionCreate', async interaction => {
         //otherwise, just increment the existing record
         await commandRecords.increment('count', {where: {command: command.data.name}})
     };
+    commandsServed.inc()
+    commandsPerMinute.mark()
 
     if (!command) return;
 
@@ -244,6 +272,8 @@ client.on('interactionCreate', async interaction => {
 })
 
 client.on('messageCreate', async message => {
+    messagesRead.inc()
+    messagesPerMinute.mark()
     if (message.author.bot){
         return
     };
