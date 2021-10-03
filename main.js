@@ -272,7 +272,7 @@ client.on('interactionCreate', async interaction => {
 })
 
 client.on('messageCreate', async message => {
-    messagesRead.inc()
+    messagesRead.inc(1)
     messagesPerMinute.mark()
     if (message.author.bot){
         return
