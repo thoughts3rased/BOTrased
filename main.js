@@ -267,7 +267,11 @@ client.on('messageCreate', async message => {
         
         //if both the user and server's level up message toggles are both enabled, send a level up message. 
         if (server.get('levelUpMessage') == 1 && user.get('levelUpMessage') == 1){
-            await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(user.get('exp') / 100)}!`)
+            try {
+                await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(user.get('exp') / 100)}!`)
+            } catch (error){
+                console.log(error)
+            }
         }
     }
 })
