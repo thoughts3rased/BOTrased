@@ -21,19 +21,19 @@ const commandsServed = io.counter({
 })
 const commandsPerMinute = io.meter({
     name: "Commands served in the last minute",
-    unit: "commands"
+    unit: " commands"
 })
 const pm2ServerCount = io.metric({
     name: "Servers joined",
-    unit: "servers"
+    unit: " servers"
 })
-const messagesRead = io.metric({
+const messagesRead = io.counter({
     name: "Messages read since last boot",
-    unit: "messages"
+    unit: " messages"
 })
 const messagesPerMinute = io.meter({
     name: "Messages read in the last minute",
-    unit: "messages"
+    unit: " messages"
 })
 
 global.userRecords = sequelize.define('users', {
