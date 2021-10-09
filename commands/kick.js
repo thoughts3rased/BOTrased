@@ -42,7 +42,7 @@ module.exports = {
                         );
         await interaction.options.getMember('target').createDM()
                         .then((DMChannel) => {
-                            let banMessage = DMChannel.send({embeds: [embed]}).then(() => {
+                            let kickMessage = DMChannel.send({embeds: [embed]}).then(() => {
                                 interaction.editReply("Kick message sent successfully.")
                             })    
                         .catch((e) => {
@@ -54,7 +54,7 @@ module.exports = {
                                 })
                                 .catch((e) => {
                                     interaction.followUp("There was an issue while trying to kick this user.")
-                                    banMessage.delete()
+                                    kickMessage.delete()
                                     console.log(e.stack)
                                 })
                             })
