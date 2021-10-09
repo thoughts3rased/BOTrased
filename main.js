@@ -1,11 +1,8 @@
 const fs = require('fs');
 const Sequelize = require('sequelize');
 const { Client , Collection, Intents, Permissions } = require("discord.js");
-<<<<<<< HEAD
 const io = require('@pm2/io')
-=======
 const { AutoPoster } = require('topgg-autoposter');
->>>>>>> production
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
