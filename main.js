@@ -1,11 +1,17 @@
 const fs = require('fs');
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
 const { Client , Collection, Intents, Permissions } = require("discord.js");
+<<<<<<< HEAD
 const io = require('@pm2/io')
+=======
+const { AutoPoster } = require('topgg-autoposter');
+>>>>>>> production
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 global.errorCount = 0
+
+const poster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
 global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, 'BOTrased', process.env.DATABASE_PASSWORD, {
     host: 'maccraft.serveminecraft.net',
@@ -266,7 +272,10 @@ client.on('interactionCreate', async interaction => {
     try{
         await command.execute(interaction);
     } catch (error) {
-        await interaction.reply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`);
+        if (!interaction.deferred){
+            await interaction.deferReply()
+        }
+        await interaction.editReply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`);
         errorCount++
     }
 })
