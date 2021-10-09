@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Permissions, MessageEmbed } = require('discord.js')
+const { Permissions, MessageEmbed, BanOptions } = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -40,20 +40,26 @@ module.exports = {
                             {name: "Reason:", value: reason},
                             {name: "Banned by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
                         );
-        try{
-            await interaction.options.getUser('target').ban()
-            await interaction.editReply("Ban successful.")
-        } catch (error){
-            console.log(error.stack)
-            return await interaction.editReply("Sorry, I had an issue with banning that member. Please try again.")
-        }
-        try{
-            await interaction.options.getUser('target').send({embeds: [embed]})
-            await interaction.followUp("Ban message sent successfully.")
-        } catch (error) {
-            console.log(error.stack);
-            await interaction.followUp("There was an issue sending this user their ban message.");
-        }
+        await interaction.options.getMember('target').createDM()
+                            .then((DMChannel) => {
+                                let banMessage = DMChannel.send({embeds: [embed]}).then(() => {
+                                    interaction.editReply("Ban message sent successfully.")
+                                })    
+                            .catch((e) => {
+                                interaction.editReply("There was an issue sending this user their ban message.")
+                            })
+                                .then(() => {
+                                    interaction.options.getMember('target').ban({days: 0, reason: reason}).then(() => {
+                                        interaction.followUp("Ban performed successfully.")
+                                    })
+                                    .catch((e) => {
+                                        interaction.followUp("There was an issue while trying to ban this user.")
+                                        banMessage.delete()
+                                        console.log(e.stack)
+                                    })
+                                })
+                            })
+        
         try{
             const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser('target').id, adminID: interaction.user.id, type: "ban", reason: interaction.options.getString('reason'), time: Math.floor(Date.now() /1000), botUsed: true});
             await interaction.followUp(`Ban entry created.`);

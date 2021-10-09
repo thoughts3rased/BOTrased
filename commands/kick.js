@@ -40,20 +40,25 @@ module.exports = {
                             {name: "Reason:", value: reason},
                             {name: "Warned by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
                         );
-        try{
-            await interaction.options.getMember('target').kick()
-            await interaction.editReply("Kick successful.")
-        } catch (error){
-            console.log(error.stack)
-            return await interaction.editReply("Sorry, I had an issue with kicking that member. Please try again.")
-        }
-        try{
-            await interaction.options.getUser('target').send({embeds: [embed]})
-            await interaction.followUp("Kick message sent successfully.")
-        } catch (error) {
-            console.log(error.stack);
-            await interaction.followUp("There was an issue sending this user their kick message.");
-        }
+        await interaction.options.getMember('target').createDM()
+                        .then((DMChannel) => {
+                            let banMessage = DMChannel.send({embeds: [embed]}).then(() => {
+                                interaction.editReply("Kick message sent successfully.")
+                            })    
+                        .catch((e) => {
+                            interaction.editReply("There was an issue sending this user their kick message.")
+                        })
+                            .then(() => {
+                                interaction.options.getMember('target').kick().then(() => {
+                                    interaction.followUp("Kick performed successfully.")
+                                })
+                                .catch((e) => {
+                                    interaction.followUp("There was an issue while trying to kick this user.")
+                                    banMessage.delete()
+                                    console.log(e.stack)
+                                })
+                            })
+                        })
         try{
             const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser('target').id, adminID: interaction.user.id, type: "warn", reason: interaction.options.getString('reason'), time: Math.floor(Date.now() /1000), botUsed: true});
             await interaction.followUp(`Kick entry created.`);
