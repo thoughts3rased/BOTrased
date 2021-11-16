@@ -1,3 +1,5 @@
+require('./.pnp.cjs').setup();
+
 const fs = require("fs");
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
