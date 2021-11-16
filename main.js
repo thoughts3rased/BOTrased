@@ -1,3 +1,5 @@
+require('./.pnp.cjs').setup();
+
 const fs = require('fs');
 const Sequelize = require('sequelize');
 const { Client , Collection, Intents, Permissions } = require("discord.js");
