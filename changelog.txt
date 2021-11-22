@@ -1,4 +1,4 @@
-Changelog for XX/XX/2021 (DD/MM/YYYY) - V 2.2.0
+Changelog for 22/11/2021 (DD/MM/YYYY) - V 2.2.0
 
 **__NEW COMMANDS:__**
 /clear re-added
