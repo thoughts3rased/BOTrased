@@ -12,7 +12,8 @@
     "package.json": "^2.0.1",
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2",
-    "topgg-autoposter": "^2.0.0"
+    "topgg-autoposter": "^2.0.0",
+    "yarn": "^1.22.17"
   },
   "packageManager": "yarn@3.1.0"
 }

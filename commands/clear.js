@@ -38,7 +38,7 @@ module.exports = {
                 console.log(e)
                 interaction.editReply(`An error occurred during message deletion. Traceback:\n\`\`\`${e}\`\`\`\n(Please send this to the developer)`)
             }).then(() => {
-                const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: targetChannel.id, adminID: interaction.user.id, type: "clear", reason: null, time: Math.floor(Date.now() /1000), botUsed: true});
+                const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: targetChannel.id, adminID: interaction.user.id, type: "clear", reason: interaction.options.getInteger("amount"), time: Math.floor(Date.now() /1000), botUsed: true});
             }).catch((e) => {
                 console.log(e)
                 interaction.followUp({content: "There was an error recording this administrative action.", ephemeral: true})
