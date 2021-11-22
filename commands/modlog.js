@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed, MessageButton } = require('discord.js');
+const { MessageEmbed, MessageButton, Permissions } = require('discord.js');
 const paginationEmbed = require('discordjs-button-pagination');
 
 module.exports = {
@@ -16,6 +16,11 @@ module.exports = {
                 .addChoice("channel message clear", "clear")
                 .addChoice("warn", "warn")),
     async execute(interaction) {
+        //Check to see if the user has the appropriate permissions for this command
+        if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)){
+            return await interaction.reply({content: "You do not have the appropriate permission to use that command.", ephemeral: true})
+        };
+        
         //This may take a while to generate the modlog, so we need to defer the reply to give us 15 minutes to generate our response
         await interaction.deferReply();
 
