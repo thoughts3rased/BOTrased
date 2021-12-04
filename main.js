@@ -193,6 +193,12 @@ global.commandRecords = sequelize.define('commandusage', {
     timestamps: false
 })
 
+//Setting up DB table relations
+userRecords.hasMany(inventoryRecords, {foreignKey: 'userID'})
+inventoryRecords.belongsTo(userRecords, {foreignKey: 'userID'})
+inventoryRecords.belongsTo(itemRecords, {foreignKey: 'itemID'})
+itemRecords.hasOne(inventoryRecords, {foreignKey: 'itemID'})
+
 client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
