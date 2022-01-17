@@ -43,6 +43,10 @@ module.exports = {
             pages.push(embed)
             }
 
+        if (pages.length <= 1) {
+            return await interaction.reply({embeds: [pages[0]]})
+        }
+        
         //buttons to be passed through to the pagination module
         buttonList = [
             new MessageButton()
