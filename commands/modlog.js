@@ -38,7 +38,7 @@ module.exports = {
         const processedModLogData = modLogData.map(result => result.dataValues)
 
         if (processedModLogData.length === 0){
-            return await interaction.editReply("There are no records for your server with the specified filters.")
+            return await interaction.editReply(":x: There are no records for your server with the specified filters.")
         }
 
         //Used to store the modlog data, in arrays of 10
@@ -77,8 +77,12 @@ module.exports = {
                 
                 //We want the wording to change based on if it is a clear command or not, so we check for this and adjust accordingly
                 if (modlogDataChunks[i][j]["type"] == "clear"){
-                    let currentChannel = await interaction.client.channels.fetch(modlogDataChunks[i][j]['recipientID']) 
-                    fieldValueString += `Channel - #${currentChannel.name}\nAmount of Messages Cleared - ${modlogDataChunks[i][j]['reason']}\n`
+                    try{
+                        let currentChannel = await interaction.client.channels.fetch(modlogDataChunks[i][j]['recipientID'])
+                        fieldValueString += `Channel - #${currentChannel.name}\nAmount of Messages Cleared - ${modlogDataChunks[i][j]['reason']}\n`
+                    } catch {
+                        fieldValueString += `Channel - #deleted-channel\nAmount of Messages Cleared - ${modlogDataChunks[i][j]['reason']}\n`
+                    }
                 } else {
                     let currentRecipient = await interaction.client.users.fetch(modlogDataChunks[i][j]['recipientID'])
                     fieldValueString += `Recipient - ${currentRecipient.username}#${currentRecipient.discriminator}\n`
