@@ -2,7 +2,8 @@ module.exports = {
   apps : [{
     name   : "BOTrased",
     script : "./main.js",
-    watch: true
+    watch: true,
+    version: "2.3.1"
   }],
 
   deploy: {
