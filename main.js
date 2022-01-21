@@ -249,7 +249,7 @@ client.once('ready', () => {
         // generate random number between 1 and list length.
         const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1);
         client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: 'online'});
-      }, 120000);
+      }, 900000);
     });
     setInterval(() => {
         pm2ServerCount.set(client.guilds.cache.size)

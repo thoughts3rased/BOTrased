@@ -1,10 +1,7 @@
-Changelog for 17/01/2022 (DD/MM/YYYY) - V 2.3.0
+Changelog for 21/01/2022 (DD/MM/YYYY) - V 2.3.1
 
-**__NEW COMMANDS:__**
-/inventory added, for displaying your inventory
-
-**__BUG FIXES__**:
-BOTrased will no longer encounter a Discord APIError when attempting to look up deleted channels for the modlog
+**__MISC CHANGES__**
++ BOTrased will now rotate through its statuses every 15 minutes rather than every 2 minutes
 
 **__KNOWN ISSUES:__**
 - BOTrased will fail to congratulate you on levelling up if messages are sent too quickly
