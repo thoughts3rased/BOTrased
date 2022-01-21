@@ -1,0 +1,11 @@
+Changelog for 16/02/2021: (PRE-RELASE PYTHON CHANGELOG)
++ Added the ability to view both personal and server-wide settings. Now you can see the status of your settings without having to toggle back and forth.
++ Added the ability to @mention BOTrased in lieu of a prefix. This should help if you accidentally assign two bots the same prefix!
++ BOTrased now ignores any messages coming from other bots. This was mostly to ensure that bots were not getting entries in the database.
++BOTrased now displays a typing status when performing actions that take a while to generate a response. This should help people determine whether BOTrased is working or is just flat out broken
++BOTrased now has some new status messages, these rotate every 30 minutes
+- Removed 451 bots from BOTrased's user database. This should help keep the database at a manageable size.
+- BOTrased now no longer fails to show a leaderboard if a user deletes their account or is suspended
+- BOTrased now no longer fails to fulfil commands if a database connection is not present 
+
+As of writing this announcement, BOTrased is currently in 33 servers. Thank you to those who have kept it in your servers, and I hope that it is serving you to how you expect. I'll soon be writing up a privacy policy for the data I store and what I use it for, as well as providing a way for users to opt-out of this collection. 

@@ -1,0 +1,40 @@
+Changelog for 24/09/2021 (DD/MM/YYYY) - V 2.0.0 JAVA EDITION
+
+**__FEATURED CHANGES:__**
+*Goodbye Python!*
+BOTrased is now fully written in JavaScript, and uses the Slash Commands system for all of its commands.
+This should work better and allow for BOTrased to be more up to date with newer features whilst taking advantage of them to enhance the experience of using it.
+
+
+**__BUG FIXES:__**
+ + I guess not dying when the new intent is introduced is a bug fix in a kind of way.
+- BOTrased will no longer display the author's badges when using another user for an argument with /profile
+
+**__NEW COMMANDS:__**
++ /usersettings added, containing `levelupmessage`, `profilemessage`, `clearprofilemessage`, `show` and `embedcolour`
++ /status added, giving you technical information about BOTrased
+
+**__COMMAND CHANGES:__**
+- The /weather command has been removed due to the lack of an OpenWeatherMap API wrapper for Node.js
+- The prefix command has been removed due to the fact that it is now redundant
+- The profile embed will no longer display a default message if none is set
+- The profile embed will no longer present my profile in a special colour, rather you should identify me by the developer badge on my profile
+- Osu commands have been removed due to low usage
+~ Probabilities and ranges for the daily handout have been changed
++ svsettings, now called serversettings, is now a group containing all the different options regarding it.
++ A custom profile colour will now override the default level-dependant colour
+- Leaderboards are no longer cached in the background, mimicking old behaviour and providing up to date leaderboards
++ All daily timers will now display a timestamp instead of a numerical counter
+
+**__MISC CHANGES:__**
+- Users no longer accumulate exp and credits from invoking commands
++ BOTrased will now give you a full error report in the event that it encounters an unexpected error
+
+**__SILENT CHANGES:__**
++ All vulnerable database credentials are now stored as environment variables, increasing security.
++ BOTrased now tracks how many times each command has been used. This is just a counter that increments, I cannot see who has used the command or why.
++ The prefix column has been dropped in the `servers` database table due to deprecation
+
+**__KNOWN ISSUES:__**
+- BOTrased is no longer written in Python
+- BOTrased will fail to congratulate you on levelling up if messages are sent too quickly

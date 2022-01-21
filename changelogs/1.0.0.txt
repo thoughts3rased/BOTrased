@@ -1,0 +1,16 @@
+Changelog for 10/03/2021 (DD/MM/YY) - V 1.0.0
++ Added help dialogue for !slots command to allow people to see the fruit table
++ Added rock paper scissors minigame
++ After performing an action that gets logged to the modlog table, BOTrased will now give you a case number for future reference
++ Administrators may now view case by case modlogs, as long as they have the manage server permission
++ Added !modlog, which allows you to view the last 100 administrative actions performed with the bot (audit log support coming Soon™️) with page support
++ Changelog now shows the note at the bottom to save on character count
++ Changelog title is now the embed title to save on character count
++ Changelog title description is now the changelog's main body
++ **SILENT CHANGE** - Separated all cogs into their own individual files, should make maintaining the code easier
+- **SILENT CHANGE** - Removed redundant "data" folder from bot directory
+- **SILENT CHANGE** - Token and API keys are now no longer hardcoded in, instead they are stored in ENV_VARs
++ **SILENT CHANGE** - !fullreload added, used for reloading all cogs in the "cogs" directory
++ **SILENT CHANGE** - All owner commands are now hidden on the help menu, regardless of who calls it
+
+Final note: thank you for your patience while waiting for this update, it's taken me a while due to the fact that I've had to learn new things in order to bring you the features in this update. I thank the 33 servers that still contain BOTrased and hope you all continue to enjoy using it. Please remember, if you have any issues with BOTrased, you should bring them up in BOTrased's support server. An invite link can be found in the !info command.

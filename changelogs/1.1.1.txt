@@ -1,0 +1,17 @@
+Changelog for 27/03/2021 (DD/MM/YY) - V 1.1.1 (PYTHON)
+
+**__BUG FIXES:__**
+- randomint now no longer compares two variables alphabetically to determine if they are valid
+- BOTrased will now no longer ignore all commands if the database is unreachable (however many commands rely on the database so they will not work)
++ BOTrased will now correctly report that the database is unreachable on its next status change if the database is unreachable
+
+**__COMMAND CHANGES:__**
++ Leaderboards now update every 5 minutes
+- You may now not use quote marks in your status message on your profile, BOTrased will error out if you try to use them in your message
+
+**__SILENT CHANGES:__**
+- TESTrased will no longer post its server count to BOTrased's list pages when it is connected to Discord
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel

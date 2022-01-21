@@ -1,0 +1,10 @@
+Changelog for 28/07/2021 (DD/MM/YYYY) - Emergency V 1.3.2 update (PYTHON)
+This update has been issued to deal with the issues that were causing major downtime earlier today. I'm sorry for letting anyone down, and I thank you for your patience.
+
+**__SILENT CHANGES:__**
+The bot count update for discord.ly has been temporarily been disabled as the site is currently facing a DDOS attack.
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel
+- BOTrased will send its level up message twice if the user sends a message again too quickly

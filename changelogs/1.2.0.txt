@@ -1,0 +1,27 @@
+Changelog for 28/04/2021 (DD/MM/YYYY) - V 1.2.0 (PYTHON)
+
+**__BUG FIXES:__**
+- TESTrased will no longer update bot list counts with its own server count
+
+**__NEW CATEGORY:__**
++ Osu command category added.
+
+**__NEW COMMANDS:__**
++ !osu added, for looking up osu!STD profiles
++ !ctb added, for looking up osu!Catch profiles
++ !mania added, for looking up osu!Mania profiles
++ !taiko added, for looking up osu!Taiko profiles
++ !osurecent added, for looking up a player's most recent STD play
++ !ctbrecent added, for looking up a player's most recent Catch play
++ !maniarecent added, for looking up a player's most recent Mania play
++ !taikorecent added, for looking up a player's most recent Taiko play
+
+**__COMMAND CHANGES:__**
++ Leaderboards will now show the time that they last updated at, displayed in the server's timezone
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel
+- BOTrased will send its level up message twice if the user sends a message again too quickly
+
+NOTE: **OSU COMMANDS ARE CURRENTLY DISABLED.**

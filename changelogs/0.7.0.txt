@@ -1,0 +1,4 @@
+Changelog for 15/2/2021 (DD/MM/YYYY): (PYTHON PRE-RELASE CHANGELOG)
+- Removed the !start command. This was something I always found clunky about the bot, having to use a command before you could use the games. Now, as soon as you send a message that BOTrased can see, you'll have a user profile created for you!
+
+Also, tonight there were some issues with BOTrased leaving it paralysed since about 20:30 UTC time. I deeply apologise for this, as this was caused by an automatic restart by the bot's host which caused the database connection to fail. I plan to ensure that this doesn't happen again, and hope that BOTrased stays up and functional for everyone.

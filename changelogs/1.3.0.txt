@@ -1,0 +1,21 @@
+Changelog for 25/07/2021 (DD/MM/YYYY) - V 1.3.0 (PYTHON)
+
+**__NEW CATEGORY:__**
++ Shop category has been added, for buying items to display on your profile
+~ Osu commands have been re-enabled, however they are in an experimental state
+
+**__NEW COMMANDS:__**
++ !shop added, for displaying all items on offer in BOTrased's shop
++ !buy added, for purchasing items in the shop
++ !inventory added, for viewing your inventory
++ easter egg command added, good luck finding it and the arguments it needs
+
+**__SILENT CHANGES:__**
++ BOTrased now uses a different database to store its data. This should help with managing the database and improve security.
++ TESTrased now uses a different schema inside the same database to store test data. This should help prevent unwanted data meddling.
++ BOTrased now has a separate subroutine for handling multiple embed pages
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel
+- BOTrased will send its level up message twice if the user sends a message again too quickly

@@ -1,0 +1,19 @@
+Changelog for 13/03/2021 (DD/MM/YY) - V 1.1.0 (PYTHON)
+
+**__BUG FIXES:__**
+- Fixed issue where BOTrased would mistakenly report creating a "clear" case when you used !nickname
+
+**__NEW COMMANDS:__**
++ Added !randomint, for generating a random integer. Use !randomint followed by 1 or 2 integers to generate a number in a given range
+
+**__COMMAND CHANGES:__**
++ Both !topexp and !topcredit now show the top 100 users in 10 pages
++ Leaderboards are now only updated every 15 minutes to reduce waiting time when calling !topexp or !topcredit (they would otherwise literally take 1 minute and 30 seconds to generate)
++ !info now provides a link to vote for BOTrased on top.gg
+
+**__SILENT CHANGES:__**
++ Tasks will now print statuses in order to allow tracking of task loops
++ BOTrased will now post its server count to the bot sites that it has been added to, and this will update every 30 minutes
+
+KNOWN ISSUES:
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
