@@ -50,7 +50,7 @@ module.exports = {
         }
         
         //buttons to be passed through to the pagination module
-        buttonList = [
+        const buttonList = [
             new MessageButton()
                 .setCustomId('previousbtn')
                 .setLabel('Previous Page')
