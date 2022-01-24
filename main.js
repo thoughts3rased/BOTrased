@@ -13,7 +13,7 @@ global.errorCount = 0
 const poster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
 global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
-    host: 'maccraft.serveminecraft.net',
+    host: 'thoughts3rased.moe',
     port: 1273,
     dialect: "mysql",
     logging: false
