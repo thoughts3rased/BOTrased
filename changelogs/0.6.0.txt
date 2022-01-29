@@ -1,0 +1,10 @@
+Changelog for 14/02/2021 (DD/MM/YY): (PYTHON PRE-RELASE CHANGELOG)
++ Added custom prefixes! This is something that I've wanted for a while, even before I put the bot on top.gg as I know that lots of bots use the same prefix as BOTrased and that a lot of people have tons of bots in one server. To change your server's prefix, type !prefix [newprefix]. Your prefix can be up to 2 characters long, but if it is an apostrophe or contains an apostrophe you have to put a backslash (\) before it for now (example: if your prefix is '!, it should be typed as \'! when you set it). This will not affect using the prefix if it is an apostrophe, only when setting it. I'm sorry for the inconvenience this causes, I'm busy working on a fix at the moment. This command requires that you have the "Manage Server" permission in your server.
+
++Added the ability to disable level up messages across the server. Annoyed at BOTrased interrupting conversations because someone forgot to turn their toggle off? Now you can solve that with the new !svtogglemessage command. This will stop BOTrased from sending level up messages regardless of whether they have them turned off or not, but will not affect the setting on other servers. This command also requires the "Manage Server" permission in your server.
+
+
+With the changelog out of the way, I want to thank everyone who has given BOTrased some love on its first day on top.gg and invited it into your server. I'm honoured that you've picked BOTrased for the job, and I'm committed to ensuring that BOTrased stays up to date and feature rich for all those that decide to use it.
+
+Thanks,
+Sam (Thoughts3rased)

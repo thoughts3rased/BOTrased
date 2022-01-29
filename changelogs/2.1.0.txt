@@ -1,0 +1,9 @@
+Changelog for 9/10/2021 (DD/MM/YYYY) - V 2.1.0
+
+**__NEW COMMANDS:__**
+/kick re-added
+/warn re-added
+/ban readded
+
+**__KNOWN ISSUES:__**
+- BOTrased will fail to congratulate you on levelling up if messages are sent too quickly

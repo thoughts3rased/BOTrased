@@ -1,0 +1,7 @@
+Changelog for 24/01/2022 (DD/MM/YYYY) - V 2.3.2
+
+**__BUG FIXES:__**
++ Changed the domain BOTrased was contacting for its database connection to fix unresponsiveness
+
+**__KNOWN ISSUES:__**
+- BOTrased will fail to congratulate you on levelling up if messages are sent too quickly

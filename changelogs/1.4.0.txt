@@ -1,0 +1,22 @@
+Changelog for 14/08/2021 (DD/MM/YYYY) - V 1.4.0 (PYTHON)
+
+**__FEATURED CHANGE:__**
+BOTrased now has error codes and messages to tell you where you've screwed up. Or the bot. If you get one of these and you don't understand why, feel free to join the support server for help.
+
+Error codes will be formatted the following way:
+**ERROR XXX - <Error Name>**
+<Error message>
+
+Error modes have categories too:
+1XX - Bot-side errors. Things like the leaderboard not being initialised yet.
+2XX - Database-side errors. Things like not having a profile, failed database queries and the database being unreachable.
+3XX - Discord-side errors. Things like the bot being unable to do something because Discord said no.
+4XX - User-side errors. Things like bad arguments, insufficient credits and the !daily bonus being claimed already.
+5XX - API-based errors. For errors with the APIs that BOTrased uses that aren't Discord. Things like an invalid location being used for !weather.
+
+I hope that this both makes more sense for the end user and also helps with troubleshooting issues. This should also make the bot easier for me to work with.
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel
+- BOTrased will send its level up message twice if the user sends a message again too quickly

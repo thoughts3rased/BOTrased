@@ -1,0 +1,4 @@
+Changelog for XX/XX/XXXX - V 2.4.0
+
+**__COMMAND CHANGES__**:
++ The /changelog command now displays all historical changelogs in reverse chronilogical order, including those from BOTrased's Python version

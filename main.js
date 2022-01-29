@@ -13,7 +13,7 @@ global.errorCount = 0
 const poster = AutoPoster(process.env.TOPGG_TOKEN, client)
 
 global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
-    host: 'maccraft.serveminecraft.net',
+    host: 'thoughts3rased.moe',
     port: 1273,
     dialect: "mysql",
     logging: false
@@ -249,7 +249,7 @@ client.once('ready', () => {
         // generate random number between 1 and list length.
         const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1);
         client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: 'online'});
-      }, 120000);
+      }, 900000);
     });
     setInterval(() => {
         pm2ServerCount.set(client.guilds.cache.size)

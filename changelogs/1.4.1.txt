@@ -1,0 +1,9 @@
+Changelog for 15/08/2021 (DD/MM/YYYY) - V 1.4.1 (PYTHON)
+
+**__BUG FIXES:__**
++ BOTrased will no longer immediately remove the reactions on an embed if it uses pages
+
+**__KNOWN ISSUES:__**
+- Arabic and other RTL characters will reverse the order of elements on the leaderboard for that entry
+- BOTrased will continue to type even after sending the changelog into the channel
+- BOTrased will send its level up message twice if the user sends a message again too quickly

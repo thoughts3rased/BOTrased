@@ -1,0 +1,7 @@
+Changelog for 3/10/2021 (DD/MM/YYYY) - V 2.0.1 Hotfix
+
+**__BUG FIXES:__**
++ BOTrased will no longer crash out if it fails to send a level up message due to missing permissions
+
+**__KNOWN ISSUES:__**
+- BOTrased will fail to congratulate you on levelling up if messages are sent too quickly

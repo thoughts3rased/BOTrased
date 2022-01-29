@@ -1,0 +1,8 @@
+Changelog for 21/02/2021 (PRE-RELEASE PYTHON CHANGELOG)
++ Added new database table for administrative logs
++ All administrative commands now log to the afromentioned table
++ Added Support Server invite in !info embed
++ Shuffled order of fields in !info embed
++ Added changelog command
++ Added 3 new status messages
+- Fixed issue where BOTrased would mistakenly title the experience leaderboard as the credits leaderboard
