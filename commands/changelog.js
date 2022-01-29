@@ -10,37 +10,41 @@ module.exports = {
         .setDescription('Check BOTrased\'s changelog.'),
     async execute(interaction) {
         var pages = []
-        fs.readdirSync('./changelogs').forEach(file => {
-                console.log(file)
-                var embedTitle = ''
-                var embedBody = ''
-                const changelogFileStream = fs.createReadStream(`./changelogs/${file}`);
+        let embedBody
+        let embedTitle
+        let j
+        fs.readdir('./changelogs/', (err, files)=> {
+                for (var i = 0; i < files.length; i++){
+                embedTitle = ''
+                embedBody = ''
+                const changelogFileStream = fs.createReadStream(`./changelogs/${files[i]}`);
                 const rl = readline.createInterface({
                     input: changelogFileStream,
                     crlfDelay: Infinity
                 });
-                var i = 0
+                j = 0
                 //this should split each file of the changelog onto its own line
                 rl.on('line', (line) => {
-                    if (i === 0){
+                    if (j === 0){
                         //we want the first line to be the title of the embed, with the rest being in the embed's description
-                        embedTitle += line
+                        embedTitle = line
+                        console.log(embedTitle)
                     } else{
                         embedBody += line + "\n"
+                        console.log(embedBody + 1)
                     };
-                    i ++
+                    j++
                 })
-                rl.on('close', function () {
-                    const embed = new MessageEmbed()
-                    .setColor('DARK_PURPLE')
-                    .setTitle(embedTitle)
-                    .setDescription(embedBody)
-                    ;
-                    pages.push(embed)
-                })
-            })
+                //console.log(embedTitle, embedBody)
+                const embed = new MessageEmbed()
+                .setColor('DARK_PURPLE')
+                .setTitle(embedTitle)
+                .setDescription(embedBody)
+                ;
+                pages.push(embed)
+        }})
         
-        console.log(pages)
+        //console.log(pages)
         const buttonList = [
             new MessageButton()
                 .setCustomId('previousbtn')
