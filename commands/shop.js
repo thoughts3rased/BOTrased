@@ -39,7 +39,7 @@ module.exports = {
                 )
                 console.log(shopDataArray)
                 var pages = []
-                for(var i = 0; i < shopDataArray.length; i++){
+                for(var i = 0; i < Math.ceil(shopDataArray.length/5); i++){
                     var embed = new MessageEmbed()
                         .setTitle("BOTrased's Shop")
                         .setDescription("Browse through my wares and use /buy [item id] when you're done")
@@ -73,6 +73,18 @@ module.exports = {
                 pagingationEmbed(interaction, pages, buttonList)
                 break;
             case "buy":
+                await interaction.deferReply()
+                const item = await itemRecords.findOne({where: {itemID: interaction.options.getInteger("itemid"), purchasable: 1}})
+                const user = await userRecords.findOne({where: {userID: interaction.user.id}})
+                if(!item){
+                    return await interaction.editReply(":x: The item ID you entered does not correspond to an item that exists or the item is not purchasable.")
+                }
+                if(await inventoryRecords.findOne({where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})){
+                    return await interaction.editReply(":x: You already own this item.")
+                }
+                if(user.get("money") < item.get("price")){
+                    return await interaction.editReply(":x: You don't have enough credits to purchase this item.")
+                }
         }
     },
 };
