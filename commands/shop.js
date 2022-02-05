@@ -85,6 +85,9 @@ module.exports = {
                 if(user.get("money") < item.get("price")){
                     return await interaction.editReply(":x: You don't have enough credits to purchase this item.")
                 }
+                await userRecords.increment({money: 0 - item.get("price")}, {where: {userID: interaction.user.id}})
+                await inventoryRecords.create({userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")})
+                return await interaction.editReply(`You have successfully purchased **${item.get("name")}** and it has been added to your inventory. Please come again!`)
         }
     },
 };
