@@ -1,0 +1,10 @@
+Changelog for 06/02/2022 - V 2.5.0
+
+**__FEATURED CHANGE__**:
+BOTrased is now fully rewritten in JavaScript! All the features and commands I wanted to keep from the Python version are now fully implemented in the JS version, meaning I can now work on new features. If you have any suggestions, please join the support server to share them with me!
+ 
+**__NEW COMMANDS__**:
++ /slots re-added, allowing you to gamble away your credits in a text-based casino
+
+**__BUG FIXES__**:
++ The error handler will no longer cause an uncaught exception if trying to display an error message on an interaction that has already been replied to
