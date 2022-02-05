@@ -1,6 +1,6 @@
 {
   "name": "botrased",
-  "version": "2.4.0",
+  "version": "2.5.0",
   
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
