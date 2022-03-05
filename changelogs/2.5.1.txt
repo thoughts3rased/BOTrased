@@ -1,0 +1,7 @@
+Changelog for 05/03/2022 - V 2.5.1
+
+**__MINOR CHANGES__**:
+~ Changed some of the status messages
+
+**__COMMAND CHANGES__**:
+~ Changed the result messages for the slots command
