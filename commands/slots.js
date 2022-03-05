@@ -46,9 +46,9 @@ module.exports = {
                         }
                     } else if (result[0] === result[1]){
                         payout = interaction.options.getInteger("bet")
-                         interaction.followUp("Not bad... Matching two fruits means that you've won your money back. You can always try again you know.")
+                         interaction.followUp("You've won your money back by matching two fruits! How about trying your luck again?")
                     } else {
-                         interaction.followUp("Ah, no luck today I see. Better luck next time!")
+                         interaction.followUp("Unfortunately you've lost this time, better luck next time!")
                     }
                     userRecords.increment({money: payout}, {where: {userID: interaction.user.id}})
                 })
