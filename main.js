@@ -233,18 +233,26 @@ client.once('ready', () => {
     setInterval(() => {
         //these are the status messages that the bot will randomly pick from and cycle through
         const statusMessages = [
-            "Now in JavaScript!",
-            "Living to fight another day.",
-            "Prefixes be gone!",
             "Peek at my insides on github!",
             "Now supports slash commands!",
             `Currently serving ${client.guilds.cache.size} servers!`,
-            "No help command required.",
             "Bleep-bloop-blop",
             "I have a little brother called TESTrased!",
             "Check the changelog with /changelog!",
             "Have you remembered to use /daily today?",
-            "Got any servers you'd like to add me to?"
+            "Got any servers you'd like to add me to?",
+            "Touching grass",
+            "Providing input for your mother",
+            "What da dog doin?",
+            "Currently schizing",
+            "Elden Ring",
+            "Participating in a minor amount of social tomfoolery",
+            "The whip and nene",
+            "Donating to Wikipedia",
+            "Pollution Simulator",
+            "WageCage Simulator",
+            "You can do it when you B&Q it",
+            "Currently clubbing seals for XP"
         ]
         // generate random number between 1 and list length.
         const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1);
