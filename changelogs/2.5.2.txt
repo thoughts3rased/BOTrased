@@ -1,0 +1,4 @@
+Changelog for 20/03/2022 - V 2.5.2
+
+**__BUG FIXES__**:
++ BOTrased will no longer encounter an unexpected error when attempting to gift negative credits to someone
