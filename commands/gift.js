@@ -16,11 +16,10 @@ module.exports = {
                 .setRequired(true)),
     async execute(interaction) {
         if (interaction.user.id === interaction.options.getUser('recipient').id){ //make sure that the user hasn't set themselves as a target
-            await interaction.reply("You cannot gift credits to yourself.")
-            return
+            return await interaction.reply("You cannot gift credits to yourself.")
         };
         if (interaction.options.getInteger('amount') <= 0){ //make sure that the user hasn't set a gift amount below zero
-            await interaction.reply("You cannot gift less than a single credit.")
+            return await interaction.reply("You cannot gift less than a single credit.")
         }
         //get the user records of both the interaction author and the recipient
         const author = await userRecords.findOne({where: {userID: interaction.user.id}})
