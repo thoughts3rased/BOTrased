@@ -1,0 +1,4 @@
+Changelog for 1/05/2022 - V 2.5.3
+
+**__BUG FIXES__**:
++ BOTrased no longer uses system environment variables to store credentials
