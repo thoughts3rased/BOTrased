@@ -1,0 +1,15 @@
+{
+    "database": {
+        "host": "",
+        "port": 1,
+        "user": "",
+        "schema": "",
+        "password": ""
+    },
+    "discord": {
+        "token": ""
+    },
+    "misctokens": {
+        "topgg": ""
+    }
+}
