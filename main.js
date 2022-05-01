@@ -2,7 +2,7 @@ require("./.pnp.cjs").setup()
 
 const fs = require("fs")
 const Sequelize = require("sequelize")
-const { Client , Collection, Intents, Permissions } = require("discord.js")
+const { Client , Collection, Intents } = require("discord.js")
 const io = require("@pm2/io")
 const { AutoPoster } = require("topgg-autoposter")
 const config = require("./config.json")
