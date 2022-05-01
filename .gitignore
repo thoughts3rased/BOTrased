@@ -2,3 +2,4 @@
 .yarn/unplugged
 .yarn/install-state.gz
 command checklist.txt
+config.json

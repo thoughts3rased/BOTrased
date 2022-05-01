@@ -5,16 +5,17 @@ const Sequelize = require('sequelize');
 const { Client , Collection, Intents, Permissions } = require("discord.js");
 const io = require('@pm2/io')
 const { AutoPoster } = require('topgg-autoposter');
+const config = require('./config.json');
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 global.errorCount = 0
 
-const poster = AutoPoster(process.env.TOPGG_TOKEN, client)
+const poster = AutoPoster(config.misctokens.topgg, client)
 
-global.sequelize = new Sequelize(process.env.DATABASE_SCHEMA, process.env.DATABASE_USERNAME, process.env.DATABASE_PASSWORD, {
-    host: 'thoughts3rased.moe',
-    port: 1273,
+global.sequelize = new Sequelize(config.database.schema , config.database.user, config.database.password, {
+    host: config.database.host,
+    port: config.database.port,
     dialect: "mysql",
     logging: false
 });
@@ -328,4 +329,4 @@ client.on('messageCreate', async message => {
     }
 })
 
-client.login(process.env.TOKEN);
+client.login(config.discord.token);
