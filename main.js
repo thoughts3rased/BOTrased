@@ -4,14 +4,11 @@ const fs = require("fs")
 const Sequelize = require("sequelize")
 const { Client , Collection, Intents } = require("discord.js")
 const io = require("@pm2/io")
-const { AutoPoster } = require("topgg-autoposter")
 const config = require("./config.json")
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]})
 global.errorCount = 0
-
-const poster = AutoPoster(config.misctokens.topgg, client)
 
 global.sequelize = new Sequelize(config.database.schema , config.database.user, config.database.password, {
 	host: config.database.host,
