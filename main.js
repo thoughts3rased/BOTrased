@@ -4,14 +4,16 @@ const fs = require("fs")
 const Sequelize = require("sequelize")
 const { Client , Collection, Intents } = require("discord.js")
 const io = require("@pm2/io")
-const { AutoPoster } = require("topgg-autoposter")
 const config = require("./config.json")
+const { defineTables, syncTables } = require("./sequelizeDef.js")
+const { reportError } = require("./helpers/reportError")
+const crypto = require("crypto")
 
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]})
 global.errorCount = 0
 
-const poster = AutoPoster(config.misctokens.topgg, client)
+global.maintenanceMode = false
 
 global.sequelize = new Sequelize(config.database.schema , config.database.user, config.database.password, {
 	host: config.database.host,
@@ -42,222 +44,71 @@ const messagesPerMinute = io.meter({
 	unit: " messages"
 })
 
-global.userRecords = sequelize.define("users", {
-	userID: {
-		type: Sequelize.CHAR(18),
-		primaryKey: true,
-		allowNull: false
-	},
-	exp: {
-		type: Sequelize.BIGINT.UNSIGNED,
-		defaultValue: 0
-	},
-	level: {
-		type: Sequelize.BIGINT.UNSIGNED,
-		defaultValue: 0
-	},
-	money: {
-		type: Sequelize.BIGINT.UNSIGNED,
-		defaultValue: 0
-	},
-	message: {
-		type: Sequelize.STRING(144),
-		defaultValue: null
-	},
-	levelUpMessage: {
-		type: Sequelize.TINYINT(1),
-		defaultValue: 1
-	},
-	lastdaily: {
-		type: Sequelize.BIGINT.UNSIGNED,
-		defaultValue: null
-	},
-	embedColour: {
-		type: Sequelize.CHAR(6),
-		defaultValue: null
-	}
-}, {
-	timestamps: false
-})
-
-global.serverRecords = sequelize.define("servers", {
-	serverID: {
-		type: Sequelize.CHAR(18),
-		primaryKey: true,
-		allowNull: false
-	},
-	levelUpMessage: {
-		type: Sequelize.TINYINT(1),
-		defaultValue: 1
-	}
-}, {
-	timestamps:false
-})
-
-global.adminlogRecords = sequelize.define("adminlogs", {
-	logID: {
-		type: Sequelize.INTEGER,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	serverID: {
-		type: Sequelize.CHAR(18)
-	},
-	recipientID: {
-		type: Sequelize.CHAR(18)
-	},
-	adminID: {
-		type: Sequelize.CHAR(18)
-	},
-	type: {
-		type: Sequelize.STRING(15),
-		isIn: [["warn", "ban", "kick", "clear", "name"]],
-		allowNull: false
-	},
-	reason: {
-		type: Sequelize.STRING(240),
-		defaultValue: null
-	},
-	time: {
-		type: Sequelize.BIGINT
-	},
-	botUsed: {
-		type: Sequelize.TINYINT(1)
-	}
-
-}, {
-	timestamps: false
-})
-
-global.inventoryRecords = sequelize.define("inventory", {
-	userID: {
-		type: Sequelize.CHAR(18),
-		allowNull: false,
-		primaryKey: true
-	},
-	itemID: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		primaryKey: true
-	},
-	showOnProfile: {
-		type: Sequelize.TINYINT(1),
-		allowNull: false,
-		defaultValue: 0
-	}
-}, {
-	timestamps: false,
-	freezeTableName: true
-})
-
-global.itemRecords = sequelize.define("items", {
-	itemID: {
-		type: Sequelize.INTEGER,
-		allowNull: false,
-		primaryKey: true,
-		autoIncrement: true
-	},
-	type: {
-		type: Sequelize.STRING(45)
-	},
-	name: {
-		type: Sequelize.STRING(45)
-	},
-	emojiString: {
-		type: Sequelize.STRING(80)
-	},
-	price: {
-		type: Sequelize.INTEGER
-	},
-	description: {
-		type: Sequelize.STRING(240)
-	},
-	purchasable: {
-		type: Sequelize.TINYINT(1),
-		defaultValue: 1
-	}
-}, {
-	timestamps: false
-})
-
-global.commandRecords = sequelize.define("commandusage", {
-	command: {
-		type: Sequelize.STRING,
-		allowNull: false,
-		primaryKey: true
-	},
-	count: {
-		type: Sequelize.BIGINT.UNSIGNED,
-		defaultValue: 0
-	}
-}, {
-	timestamps: false
-})
-
-//Setting up DB table relations
-userRecords.hasMany(inventoryRecords, {foreignKey: "userID"})
-inventoryRecords.belongsTo(userRecords, {foreignKey: "userID"})
-inventoryRecords.belongsTo(itemRecords, {foreignKey: "itemID"})
-itemRecords.hasOne(inventoryRecords, {foreignKey: "itemID"})
+// Define Sequelize Tables
+defineTables()
 
 client.commands = new Collection()
 
-const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"))
+const commandFolders = fs.readdirSync("./commands", { withFileTypes: true }).filter(folder => folder?.isDirectory())
 
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`)
-	client.commands.set(command.data.name, command)
-}
+commandFolders.forEach(folder => {
+    
+    const commandFiles = fs.readdirSync(`./commands/${folder.name}`).filter(file => file.endsWith(".js"))
+    commandFiles.forEach(file => {
+        try{
+            const command = require(`./commands/${folder.name}/${file}`)
+            client.commands.set(command.data.name, command)
+        }
+        catch {
+            console.warn(`File ${file} could not be initialised. Continuing...`)
+        }
+    })
+})
 
 client.once("ready", () => {
 	//set a presence showing that the bot is booting.
 	client.user.setPresence({ activities: [{ name: "Initialising..." }], status: "idle" })
     
-	//sync and initialise all table models
-	userRecords.sync()
-	console.log("User table synchronised and online.")
-	serverRecords.sync()
-	console.log("Server table synchronised and online.")
-	adminlogRecords.sync()
-	console.log("Admin Log table synced and online.")
-	inventoryRecords.sync()
-	console.log("Inventory table synced and online.")
-	itemRecords.sync()
-	console.log("Item table synced and online.")
-	commandRecords.sync()
-	console.log("Command Usage table synced and online.")
-	console.log(`Ready. Logged in as ${client.user.username}`)
+	// Sync sequelize tables
+	syncTables()
+
+	console.info(`Ready. Logged in as ${client.user.username}`)
     
 	//set status showing that the bot has finished booting
 	client.user.setPresence({ activities: [{ name: "Ready." }], status: "online" })
 
 	setInterval(() => {
-		//these are the status messages that the bot will randomly pick from and cycle through
-		const statusMessages = [
-			"Peek at my insides on github!",
-			"Now supports slash commands!",
-			`Currently serving ${client.guilds.cache.size} servers!`,
-			"Bleep-bloop-blop",
-			"I have a little brother called TESTrased!",
-			"Check the changelog with /changelog!",
-			"Have you remembered to use /daily today?",
-			"Got any servers you'd like to add me to?",
-			"Touching grass",
-			"Providing input for your mother",
-			"What da dog doin?",
-			"Currently schizing",
-			"Elden Ring",
-			"Participating in a minor amount of social tomfoolery",
-			"The whip and nene",
-			"Donating to Wikipedia",
-			"Pollution Simulator",
-			"WageCage Simulator",
-			"You can do it when you B&Q it",
-			"Currently clubbing seals for XP"
-		]
-		// generate random number between 1 and list length.
-		const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1)
-		client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: "online"})
+		if (maintenanceMode){
+			return
+		}
+		else{
+			//these are the status messages that the bot will randomly pick from and cycle through
+			const statusMessages = [
+				"Peek at my insides on github!",
+				"Now supports slash commands!",
+				`Currently serving ${client.guilds.cache.size} servers!`,
+				"Bleep-bloop-blop",
+				"I have a little brother called TESTrased!",
+				"Check the changelog with /changelog!",
+				"Have you remembered to use /daily today?",
+				"Got any servers you'd like to add me to?",
+				"Touching grass",
+				"Providing input for your mother",
+				"What da dog doin?",
+				"Currently schizing",
+				"Elden Ring",
+				"Participating in a minor amount of social tomfoolery",
+				"The whip and nene",
+				"Donating to Wikipedia",
+				"Pollution Simulator",
+				"WageCage Simulator",
+				"You can do it when you B&Q it",
+				"Currently clubbing seals for XP"
+			]
+			// generate random number between 1 and list length.
+			const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1)
+			client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: "online"})
+		}
 	}, 900000)
 })
 setInterval(() => {
@@ -268,15 +119,19 @@ setInterval(() => {
 client.on("interactionCreate", async interaction => {
 	if (!interaction.isCommand()) return
 
+	if (maintenanceMode){
+		return await interaction.reply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
+	}
+
 	const command = client.commands.get(interaction.commandName)
 
 	//command usage counting logic 
-	if (await commandRecords.findOne({where: {command: command.data.name}}) == null){
+	if (await global.commandRecords.findOne({where: {command: command.data.name}}) == null){
 		//if a record for this command can't be found, create it
-		await commandRecords.create({command: command.data.name, count: 1})
+		await global.commandRecords.create({command: command.data.name, count: 1})
 	} else {
 		//otherwise, just increment the existing record
-		await commandRecords.increment("count", {where: {command: command.data.name}})
+		await global.commandRecords.increment("count", {where: {command: command.data.name}})
 	}
 	commandsServed.inc()
 	commandsPerMinute.mark()
@@ -289,21 +144,46 @@ client.on("interactionCreate", async interaction => {
 		if (!interaction.deferred && !interaction.replied){
 			await interaction.deferReply()
 		}
-		await interaction.editReply(`**Oh no! BOTrased encountered an unexpected error!**\nFull traceback: \`\`\`${error.stack}\`\`\`\nYou should send this to the developer, Thoughts3rased. \n(hint: if you can, use /info to get a link to the support server)`)
-		errorCount++
+		const errorId = crypto.randomUUID()
+		await reportError(errorId, error.stack, command.data.name, interaction.user.id, interaction.guild.id)
+			.then(() => {
+				interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
+			})
+			.catch((error) => {
+				console.error(error)
+				interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nAn error report was generated, but failed to save. Please let Thoughts3rased#3006 know this has happened.`)
+			})
+		global.errorCount++
 	}
 })
 
 client.on("messageCreate", async message => {
+	if (message.content){
+		if (message.author.id === "273140563971145729" && message.content === `${client.user.mention} correction needed 💢💢`){
+			maintenanceMode = true
+			message.channel.send("Maintenance mode enabled.")
+			client.user.setPresence({activities: [{name: "Maintenance Mode Enabled"}], status: "idle"})
+		}
+		else if (message.author.id === "273140563971145729" && message.content === `<@${client.user.id}> wakey wakey, it's time for school`){
+			maintenanceMode = false
+			message.channel.send("Maintenance mode disabled.")
+			client.user.setPresence({activities: [{name: "Ready"}], status: "active"})
+		}
+
+		return
+	}
+
+	if (maintenanceMode) return
+	
 	messagesRead.inc(1)
 	messagesPerMinute.mark()
 	if (message.author.bot){
 		return
 	}
 	//get the message author's profile, and if it can't be found create it
-	var [user, created] = await userRecords.findOrCreate({where: {userID: message.author.id}, defaults: {userID: message.author.id}})
+	var [user] = await global.userRecords.findOrCreate({where: {userID: message.author.id}, defaults: {userID: message.author.id}})
 	//get the server's entry in the database, and if it can't be found create it
-	const [server, recordCreated] = await serverRecords.findOrCreate({where: {serverID: message.guild.id}, defaults: {serverID: message.guild.id}})
+	const [server] = await global.serverRecords.findOrCreate({where: {serverID: message.guild.id}, defaults: {serverID: message.guild.id}})
     
 	//calculate credit and exp handout amounts and update their respective records
 	const expAmount =  Math.floor(Math.random() * 3)
@@ -312,7 +192,7 @@ client.on("messageCreate", async message => {
 	await user.increment("money", {by: creditAmount, where: {userID: message.author.id}})
     
 	//obtain updated record for target user
-	user = await userRecords.findOne({where: {userID: message.author.id}})
+	user = await global.userRecords.findOne({where: {userID: message.author.id}})
     
 	//level up checking logic
 	if (Math.floor(user.get("exp") / 100) > user.get("level")){
@@ -323,7 +203,7 @@ client.on("messageCreate", async message => {
 			try {
 				await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(user.get("exp") / 100)}!`)
 			} catch (error){
-				console.log(error)
+				console.error(error)
 			}
 		}
 	}
