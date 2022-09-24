@@ -1,5 +1,3 @@
-require("./.pnp.cjs").setup()
-
 const fs = require("fs")
 const Sequelize = require("sequelize")
 const { Client , Collection, Intents } = require("discord.js")
@@ -158,20 +156,6 @@ client.on("interactionCreate", async interaction => {
 })
 
 client.on("messageCreate", async message => {
-	if (message.content){
-		if (message.author.id === "273140563971145729" && message.content === `${client.user.mention} correction needed 💢💢`){
-			maintenanceMode = true
-			message.channel.send("Maintenance mode enabled.")
-			client.user.setPresence({activities: [{name: "Maintenance Mode Enabled"}], status: "idle"})
-		}
-		else if (message.author.id === "273140563971145729" && message.content === `<@${client.user.id}> wakey wakey, it's time for school`){
-			maintenanceMode = false
-			message.channel.send("Maintenance mode disabled.")
-			client.user.setPresence({activities: [{name: "Ready"}], status: "active"})
-		}
-
-		return
-	}
 
 	if (maintenanceMode) return
 	

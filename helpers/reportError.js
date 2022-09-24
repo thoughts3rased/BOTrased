@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize")
 
+
 async function reportError(errorId, errorStack, command = null, commandAuthor = null, commandServer = null){
     await global.errorTable.create({
         errorId: errorId,
