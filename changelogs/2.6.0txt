@@ -1,0 +1,15 @@
+Changelog for XX/XX/2022 - V2.6.0
+
+V2 is back on the menu lads, I've decided to shelve V3 (for now) since I realise that leaving the bot without updates for another 6 months would suck and this version still has plenty of issues.
+
+**__COMMAND CHANGES__**:
++ Added maintenance mode, for disabling all commands while maintenance is being performed in the database
+- Removed residual console logs that were clogging up the console
++ Multiple owner-only commands were added to help in testing and debugging
+
+**__BUG FIXES__**:
++ Fixed a bug where servers with 19 digit IDs were causing crashes to occur
+
+**__MISC CHANGES__**:
++ General housekeeping in the bot's working directory
++ BOTrased no longer exposes raw stack traces, it instead records the error in the database and gives you an error ID to give to me
