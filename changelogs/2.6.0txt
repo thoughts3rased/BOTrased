@@ -13,3 +13,5 @@ V2 is back on the menu lads, I've decided to shelve V3 (for now) since I realise
 **__MISC CHANGES__**:
 + General housekeeping in the bot's working directory
 + BOTrased no longer exposes raw stack traces, it instead records the error in the database and gives you an error ID to give to me
++ Switched package managers from Yarn back to NPM
++ Added NPM start scripts to make deployment easier
