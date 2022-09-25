@@ -17,7 +17,7 @@ const rest = new REST({ version: "9" }).setToken(config.discord.token);
 (async () => {
 	try {
 		await rest.put(
-			Routes.applicationGuildCommands("599730045480599562", "541373621873016866"),
+			Routes.applicationGuildCommands("541373621873016866", "599730045480599562"),
 			{ body: commands },
 		)
 
