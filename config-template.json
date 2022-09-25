@@ -11,5 +11,8 @@
     },
     "misctokens": {
         "topgg": ""
-    }
+    },
+    "maintenanceSafeCommands": [
+        "maintenancemode"
+    ]
 }
