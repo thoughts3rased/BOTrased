@@ -14,14 +14,8 @@
     "mysql2": "^2.3.0",
     "package.json": "^2.0.1",
     "sequelize": "^6.6.5",
-<<<<<<< HEAD
-    "sqlite3": "^5.0.3",
-    "topgg-autoposter": "^2.0.0",
-    "yarn": "^1.22.17"
-=======
     "sqlite3": "^5.0.2",
     "topgg-autoposter": "^2.0.0"
->>>>>>> a568011 (More V2.6 work)
   },
   "devDependencies": {
     "eslint": "^8.14.0"
