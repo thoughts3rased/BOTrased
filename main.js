@@ -117,7 +117,7 @@ setInterval(() => {
 client.on("interactionCreate", async interaction => {
 	if (!interaction.isCommand()) return
 
-	if (maintenanceMode){
+	if (maintenanceMode && !config.maintenanceSafeCommands.includes(interaction.commandName)){
 		return await interaction.reply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
 	}
 

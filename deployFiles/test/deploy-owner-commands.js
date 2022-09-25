@@ -14,8 +14,9 @@ for (const file of commandFiles) {
 	try{
 		commands.push(command.data.toJSON())
 	}
-	catch{
+	catch(e){
 		console.warn(`Error deploying command at file: ./commands/owner/${file}`)
+		console.error(e)
 	}
 }
 
