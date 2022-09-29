@@ -1,25 +1,23 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed, MessageButton, Permissions } = require("discord.js")
-const paginationEmbed = require("discordjs-button-pagination")
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits, SlashCommandBuilder } = require("discord.js")
+const paginationEmbed = require("../../helpers/paginationEmbed")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("modlog")
 		.setDescription("Check the log of all the actions performed with BOTrased")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 		.addStringOption(option => 
 			option.setName("actiontype")
 				.setRequired(false)
 				.setDescription("Search for a specific type of action in the modlog.")
-				.addChoice("ban", "ban")
-				.addChoice("kick", "kick")
-				.addChoice("nickname change", "name")
-				.addChoice("channel message clear", "clear")
-				.addChoice("warn", "warn")),
+				.addChoices(
+					{ name: "ban", value: "ban" },
+					{ name: "kick", value: "kick" },
+					{ name: "nickname change", value: "name" },
+					{ name: "channel message clear", value: "clear" },
+					{ name: "warn", value: "warn" }
+				)),
 	async execute(interaction) {
-		//Check to see if the user has the appropriate permissions for this command
-		if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)){
-			return await interaction.reply({content: "You do not have the appropriate permission to use that command.", ephemeral: true})
-		}
         
 		//This may take a while to generate the modlog, so we need to defer the reply to give us 15 minutes to generate our response
 		await interaction.deferReply()
@@ -38,7 +36,7 @@ module.exports = {
 		const processedModLogData = modLogData.map(result => result.dataValues)
 
 		if (processedModLogData.length === 0){
-			return await interaction.editReply(":x: There are no records for your server with the specified filters.")
+			return await interaction.editReply("ⓘ There are no records for your server with the specified filters.")
 		}
 
 		//Used to store the modlog data, in arrays of 10
@@ -62,7 +60,7 @@ module.exports = {
 		}
 
 		for (var i = 0; i < modlogDataChunks.length; i++){
-			const currentPage = new MessageEmbed()
+			const currentPage = new EmbedBuilder()
 				.setTitle(`Administrator log for ${interaction.guild.name}`)
 			if (interaction.options.getString("actiontype")) {
 				currentPage.setDescription(`You searched for: ${searchTypeDict[interaction.options.getString("actiontype")]}`)
@@ -99,14 +97,14 @@ module.exports = {
 		}
 		
 		const buttonList = [
-			new MessageButton()
+			new ButtonBuilder()
 				.setCustomId("previousbtn")
 				.setLabel("Previous Page")
-				.setStyle("DANGER"),
-			new MessageButton()
+				.setStyle(ButtonStyle.Danger),
+			new ButtonBuilder()
 				.setCustomId("nextbtn")
 				.setLabel("Next Page")
-				.setStyle("SUCCESS")
+				.setStyle(ButtonStyle.Success)
 		]
 
 		paginationEmbed(interaction, pages, buttonList)

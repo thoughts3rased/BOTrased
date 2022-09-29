@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed, MessageButton } = require("discord.js")
+const { EmbedBuilder, MessageButton, SlashCommandBuilder } = require("discord.js")
 const paginationEmbed = require("discordjs-button-pagination")
 
 module.exports = {
@@ -30,7 +29,7 @@ module.exports = {
 		var pages = []
 		const visibleFlagDict = {"0": "", "1":" :eye:"}
 		for(var i = 0; i < Math.ceil(inventoryData.length / 10); i++){
-			var embed = new MessageEmbed()
+			var embed = new EmbedBuilder()
 				.setTitle(`${interaction.user.username}'s inventory`)
 			for(var j = i *10; j < ((i + 1) * 10); j++){
 				if(!inventoryData[j]) break

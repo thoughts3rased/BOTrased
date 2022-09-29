@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { Permissions } = require("discord.js")
+const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("nickname")
 		.setDescription("Change a member's nickname.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageNicknames)
 		.addUserOption(option =>
 			option.setName("target")
 				.setDescription("The user who's nickname you want to change.")
@@ -14,10 +14,6 @@ module.exports = {
 				.setDescription("The nickname you want to give to the user.")
 				.setRequired(true)),
 	async execute(interaction) {
-		//guild members are required to have the "Manage Nicknames" permission in order to use this command
-		if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)){
-			return await interaction.reply("You do not have the appropriate permissions to use this command.")
-		}
 		if (interaction.options.getString("newnickname").length > 32){
 			return await interaction.reply("The nickname you have entered is too long.")
 		}

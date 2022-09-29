@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed, Permissions } = require("discord.js")
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("serversettings")
 		.setDescription("Modify various server settings.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName("levelupmessage")
@@ -14,17 +14,15 @@ module.exports = {
 						.setName("state")
 						.setDescription("The option for this setting.")
 						.setRequired(true)
-						.addChoice("on", "1")
-						.addChoice("off", "0")))
+						.addChoices(
+							{ name: "on", value: "1" },
+							{ name: "off", value: "0" }
+						)))
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName("show")
 				.setDescription("Show the current settings configuration for the server.")),
 	async execute(interaction) {
-		if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)){
-			await interaction.reply("You are not permitted to use this command group.")
-			return
-		}
 		const serverRecord = await global.serverRecords.findOne({where: {serverID: interaction.guild.id}})
 		const statuses = {1: "Enabled", 0: "Disabled"}
 		switch(interaction.options.getSubcommand()){
@@ -33,7 +31,7 @@ module.exports = {
 			await interaction.reply(`Level up messages are now globally **${statuses[interaction.options.getString("state")].toUpperCase()}** for the server.`)
 			break
 		case "show":
-			var embed = new MessageEmbed()
+			var embed = new EmbedBuilder()
 				.setTitle(`Settings configuration for ${interaction.guild.name}`)
 				.addFields({name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`})
 			await interaction.reply({embeds: [embed]})

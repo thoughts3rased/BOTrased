@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { Permissions } = require("discord.js")
+const { PermissionFlagsBits, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("clear")
 		.setDescription("Clear a specific amount of messages in a specified channel.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
 		.addIntegerOption(option =>
 			option.setName("amount")
 				.setDescription("The amount of messages that the bot should clear.")
@@ -13,10 +13,6 @@ module.exports = {
 			option.setName("targetchannel")
 				.setDescription("The channel that you want to clear messages in.")),
 	async execute(interaction) {
-		//Check if the user has the appropriate permissions to use the command
-		if (!interaction.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)){
-			return await interaction.reply({content: "You do not have the appropriate permission to use that command.", ephemeral: true})
-		}
 		//To determine what channel the bulk deletion should be targeted at, we should check to see if an argument has been passed
 		let targetChannel
 		if (interaction.options.getChannel("targetchannel") == null){

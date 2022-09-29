@@ -1,8 +1,7 @@
 
 
 const fs = require("fs")
-const { REST } = require("@discordjs/rest")
-const { Routes } = require("discord-api-types/v9")
+const { REST, Routes } = require("discord.js")
 const config = require("../../config.json")
 
 const commands = []
@@ -17,13 +16,14 @@ commandFolders.forEach(folder => {
             const command = require(`..//..//commands/${folder.name}/${file}`)
             commands.push(command.data.toJSON())
         }
-        catch {
+        catch (e) {
             console.warn(`File ${file} could not be initialised. Continuing...`)
+            console.error(e.stack)
         }
     })
 })
 
-const rest = new REST({ version: "9" }).setToken(config.discord.token);
+const rest = new REST({ version: "10" }).setToken(config.discord.token);
 
 (async () => {
 	try {

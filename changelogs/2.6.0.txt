@@ -1,4 +1,4 @@
-Changelog for XX/XX/2022 - V2.6.0
+Changelog for 25/09/2022 - V 2.6.0
 
 V2 is back on the menu lads, I've decided to shelve V3 (for now) since I realise that leaving the bot without updates for another 6 months would suck and this version still has plenty of issues.
 

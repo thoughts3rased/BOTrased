@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,7 +6,7 @@ module.exports = {
 		.setDescription("View information about BOTrased"),
 	async execute(interaction) {
 		const owner = interaction.client.users.cache.get("273140563971145729")
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("DARK_PURPLE")
 			.setTitle(interaction.client.user.username)
 			.setDescription("A Discord Bot written entirely in JavaScript.")

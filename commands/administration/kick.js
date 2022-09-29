@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { Permissions, MessageEmbed } = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("kick")
 		.setDescription("Kicks a user and sends a message in DMs. Requires \"Kick Members\" permission.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
 		.addUserOption(option =>
 			option
 				.setName("target")
@@ -16,9 +16,6 @@ module.exports = {
 				.setDescription("The reason for kicking this user.")
 				.setRequired(false)),
 	async execute(interaction) {
-		if(!interaction.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS, true)){
-			return await interaction.reply("You do not have the appropriate permissions to use this command.")
-		}
 		if(interaction.user.id == interaction.options.getUser("target").id){
 			return await interaction.reply("You cannot kick yourself.")
 		}
@@ -32,7 +29,7 @@ module.exports = {
 		} else {
 			reason = interaction.options.getString("reason")
 		}
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("ORANGE")
 			.setTitle(`You have been kicked from ${interaction.guild.name}!`)
 			.setThumbnail("https://i.imgur.com/XpWbrhp.png")

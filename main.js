@@ -1,14 +1,15 @@
 const fs = require("fs")
 const Sequelize = require("sequelize")
-const { Client , Collection, Intents } = require("discord.js")
+const { Client , Collection, GatewayIntentBits } = require("discord.js")
 const io = require("@pm2/io")
 const config = require("./config.json")
 const { defineTables, syncTables } = require("./sequelizeDef.js")
 const { reportError } = require("./helpers/reportError")
+const { reportCommandUsage } = require("./helpers/reportCommandUsage.js")
 const crypto = require("crypto")
 
 
-const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]})
+const client = new Client({intents: [GatewayIntentBits.Guilds]})
 global.errorCount = 0
 
 global.maintenanceMode = false
@@ -43,7 +44,7 @@ const messagesPerMinute = io.meter({
 })
 
 // Define Sequelize Tables
-defineTables()
+await defineTables()
 
 client.commands = new Collection()
 
@@ -63,19 +64,19 @@ commandFolders.forEach(folder => {
     })
 })
 
-client.once("ready", () => {
+client.once("ready", async () => {
 	//set a presence showing that the bot is booting.
 	client.user.setPresence({ activities: [{ name: "Initialising..." }], status: "idle" })
     
 	// Sync sequelize tables
-	syncTables()
+	await syncTables()
 
 	console.info(`Ready. Logged in as ${client.user.username}`)
     
 	//set status showing that the bot has finished booting
 	client.user.setPresence({ activities: [{ name: "Ready." }], status: "online" })
 
-	setInterval(() => {
+	setInterval(async () => {
 		if (maintenanceMode){
 			return
 		}
@@ -105,36 +106,34 @@ client.once("ready", () => {
 			]
 			// generate random number between 1 and list length.
 			const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1)
-			client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: "online"})
+			await client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: "online"})
 		}
 	}, 900000)
 })
-setInterval(() => {
+setInterval(async () => {
 	pm2ServerCount.set(client.guilds.cache.size)
-})
+}, 1000)
 
 
 client.on("interactionCreate", async interaction => {
-	if (!interaction.isCommand()) return
+	if (!interaction.isChatInputCommand()) return
 
 	if (maintenanceMode && !config.maintenanceSafeCommands.includes(interaction.commandName)){
 		return await interaction.reply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
 	}
 
-	const command = client.commands.get(interaction.commandName)
-
-	//command usage counting logic 
-	if (await global.commandRecords.findOne({where: {command: command.data.name}}) == null){
-		//if a record for this command can't be found, create it
-		await global.commandRecords.create({command: command.data.name, count: 1})
-	} else {
-		//otherwise, just increment the existing record
-		await global.commandRecords.increment("count", {where: {command: command.data.name}})
+	if (config.disabledCommands.includes(interaction.commandName)){
+		return await interaction.reply(":x: This command has been disabled. Check the /changelog to see why.")
 	}
-	commandsServed.inc()
-	commandsPerMinute.mark()
+
+	const command = await client.commands.get(interaction.commandName)
 
 	if (!command) return
+	
+	await reportCommandUsage(command)
+
+	commandsServed.inc()
+	commandsPerMinute.mark()
 
 	try{
 		await command.execute(interaction)
@@ -144,12 +143,13 @@ client.on("interactionCreate", async interaction => {
 		}
 		const errorId = crypto.randomUUID()
 		await reportError(errorId, error.stack, command.data.name, interaction.user.id, interaction.guild.id)
-			.then(() => {
-				interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
+			.then(async () => {
+				if (config.environment !== "dev") await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
+				else await interaction.editReply(`:x: An unexpected error occurred. Full stack trace: \`\`\`${error.stack}\`\`\``)
 			})
-			.catch((error) => {
+			.catch(async (error) => {
 				console.error(error)
-				interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nAn error report was generated, but failed to save. Please let Thoughts3rased#3006 know this has happened.`)
+				await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nAn error report was generated, but failed to save. Please let Thoughts3rased#3006 know this has happened.`)
 			})
 		global.errorCount++
 	}
@@ -179,13 +179,13 @@ client.on("messageCreate", async message => {
 	user = await global.userRecords.findOne({where: {userID: message.author.id}})
     
 	//level up checking logic
-	if (Math.floor(user.get("exp") / 100) > user.get("level")){
-		await user.update({level: Math.floor(user.get("exp") / 100)}, {where: {userID: message.author.id}})
+	if (Math.floor(user.get("exp") / 100) > await user.get("level")){
+		await user.update({level: Math.floor(await user.get("exp") / 100)}, {where: {userID: message.author.id}})
         
 		//if both the user and server's level up message toggles are both enabled, send a level up message. 
 		if (server.get("levelUpMessage") == 1 && user.get("levelUpMessage") == 1){
 			try {
-				await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(user.get("exp") / 100)}!`)
+				await message.channel.send(`Congratulations <@${message.author.id}>, you just levelled up to level ${Math.floor(await user.get("exp") / 100)}!`)
 			} catch (error){
 				console.error(error)
 			}

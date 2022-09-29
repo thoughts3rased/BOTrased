@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -18,7 +17,7 @@ module.exports = {
 
         const errorAuthor = await interaction.client.users.fetch(errorResult?.dataValues?.commandAuthorId)
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
                     .setTitle(`Error ${interaction.options.getString("errorcode")}`)
                     .setThumbnail("https://1001freedownloads.s3.amazonaws.com/vector/thumb/146499/molumen_red_round_error_warning_icon.png")
                     .setColor("#F91102")

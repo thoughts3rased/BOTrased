@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -14,7 +13,7 @@ module.exports = {
 				dbStatus = false
 			})
 		const connectionDict = {true: "Online", false: "Unavailable"}
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setTitle("Technical information about BOTrased")
 			.setThumbnail(interaction.client.user.avatarURL())
 			.addFields(

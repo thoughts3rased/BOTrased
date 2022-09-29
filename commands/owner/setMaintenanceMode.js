@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
+const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -7,8 +7,10 @@ module.exports = {
         .addStringOption(option =>
             option.setName("state")
             .setDescription("Maintenance mode's state")
-            .addChoice("on", "true")
-            .addChoice("off", "false")),
+            .addChoices(
+                { name: "on", value: "true" },
+                { name: "off", value: "false" }
+            )),
 	async execute(interaction) {
 		global.maintenanceMode = interaction.options.getString("state") == "true"
 

@@ -1,10 +1,10 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { Permissions, MessageEmbed } = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("ban")
-		.setDescription("Bans a user and sends a message in DMs. Requires \"Ban Members\" permission.")
+		.setDescription("Bans a user and sends a message in DMs.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.BanMembers)
 		.addUserOption(option =>
 			option
 				.setName("target")
@@ -16,9 +16,6 @@ module.exports = {
 				.setDescription("The reason for banning this user.")
 				.setRequired(false)),
 	async execute(interaction) {
-		if(!interaction.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS, true)){
-			return await interaction.reply("You do not have the appropriate permissions to use this command.")
-		}
 		if(interaction.user.id == interaction.options.getUser("target").id){
 			return await interaction.reply("You cannot ban yourself.")
 		}
@@ -32,7 +29,7 @@ module.exports = {
 		} else {
 			reason = interaction.options.getString("reason")
 		}
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("RED")
 			.setTitle(`You have been permanently banned from ${interaction.guild.name}!`)
 			.setThumbnail("https://i.imgur.com/HBYFM4H.png")
@@ -41,20 +38,21 @@ module.exports = {
 				{name: "Banned by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
 			)
 		await interaction.options.getMember("target").createDM()
-			.then((DMChannel) => {
-				let banMessage = DMChannel.send({embeds: [embed]}).then(() => {
-					interaction.editReply("Ban message sent successfully.")
+			.then(async (DMChannel) => {
+				let banMessage = await DMChannel.send({embeds: [embed]}).then(async () => {
+					await interaction.editReply("Ban message sent successfully.")
 				})    
-					.catch((e) => {
+					.catch(async (e) => {
 						console.error(e.stack)
-						interaction.editReply("There was an issue sending this user their ban message.")
+						await interaction.editReply("There was an issue sending this user their ban message.")
 					})
-					.then(() => {
-						interaction.options.getMember("target").ban({days: 0, reason: reason}).then(() => {
-							interaction.followUp("Ban performed successfully.")
+					.then(async () => {
+						await interaction.options.getMember("target").ban({days: 0, reason: reason})
+						.then(async () => {
+							await interaction.followUp("Ban performed successfully.")
 						})
-							.catch((e) => {
-								interaction.followUp("There was an issue while trying to ban this user.")
+							.catch(async (e) => {
+								await interaction.followUp("There was an issue while trying to ban this user.")
 								banMessage.delete()
 								console.error(e.stack)
 							})

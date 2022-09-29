@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,8 +12,10 @@ module.exports = {
 					option.setName("state")
 						.setRequired(true)
 						.setDescription("The option for this setting.")
-						.addChoice("on", "1")
-						.addChoice("off", "0")))
+						.addChoices(
+							{ name: "on", value: "1" },
+							{ name: "off", value: "0" }
+						)))
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName("profilemessage")
@@ -81,7 +82,7 @@ module.exports = {
 			break
 		case "show":
 			const states = {1: "Enabled", 0: "Disabled"}
-			const embed = new MessageEmbed()
+			const embed = new EmbedBuilder()
 				.setColor("LIGHT_GREY")
 				.setTitle(`${interaction.user.username}'s settings configuration`)
 				.addFields(

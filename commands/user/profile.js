@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -69,7 +68,7 @@ module.exports = {
 			//if a user has set their embed colour, just get the hex string from the database
 			profileColour = `#${targetUser.get("embedColour")}`
 		}
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor(profileColour)
 			.setTitle(`${targetName}'s profile`)
 			.addFields(

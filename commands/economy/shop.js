@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed, MessageButton } = require("discord.js")
+const { EmbedBuilder, MessageButton, SlashCommandBuilder } = require("discord.js")
 const pagingationEmbed = require("discordjs-button-pagination")
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -39,7 +38,7 @@ module.exports = {
 			)
 			var pages = []
 			for(var i = 0; i < Math.ceil(shopDataArray.length/5); i++){
-				var embed = new MessageEmbed()
+				var embed = new EmbedBuilder()
 					.setTitle("BOTrased's Shop")
 					.setDescription("Browse through my wares and use /buy [item id] when you're done")
 				for(var j = 0; j < 5; j++){

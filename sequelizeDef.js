@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize")
 
-function defineTables(){
-    global.userRecords = global.sequelize.define("users", {
+async function defineTables(){
+    global.userRecords = await global.sequelize.define("users", {
         userID: {
             type: Sequelize.CHAR(18),
             primaryKey: true,
@@ -39,7 +39,7 @@ function defineTables(){
         timestamps: false
     })
     
-    global.serverRecords = global.sequelize.define("servers", {
+    global.serverRecords = await global.sequelize.define("servers", {
         serverID: {
             type: Sequelize.CHAR(19),
             primaryKey: true,
@@ -53,7 +53,7 @@ function defineTables(){
         timestamps:false
     })
     
-    global.adminlogRecords = global.sequelize.define("adminlogs", {
+    global.adminlogRecords = await global.sequelize.define("adminlogs", {
         logID: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -88,7 +88,7 @@ function defineTables(){
         timestamps: false
     })
     
-    global.inventoryRecords = global.sequelize.define("inventory", {
+    global.inventoryRecords = await global.sequelize.define("inventory", {
         userID: {
             type: Sequelize.CHAR(18),
             allowNull: false,
@@ -109,7 +109,7 @@ function defineTables(){
         freezeTableName: true
     })
     
-    global.itemRecords = global.sequelize.define("items", {
+    global.itemRecords = await global.sequelize.define("items", {
         itemID: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -139,7 +139,7 @@ function defineTables(){
         timestamps: false
     })
     
-    global.commandRecords = global.sequelize.define("commandusages", {
+    global.commandRecords = await global.sequelize.define("commandusages", {
         command: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -153,7 +153,7 @@ function defineTables(){
         timestamps: false
     })
 
-    global.errorTable = global.sequelize.define("errors", {
+    global.errorTable = await global.sequelize.define("errors", {
         errorId: {
             type: Sequelize.STRING(36),
             allowNull: false,
@@ -191,15 +191,15 @@ function defineTables(){
     global.itemRecords.hasOne(global.inventoryRecords, {foreignKey: "itemID"})
 }
 
-function syncTables(){
+async function syncTables(){
     // Sync and initialise all table models
-	global.userRecords.sync()
-	global.serverRecords.sync()
-	global.adminlogRecords.sync()
-	global.inventoryRecords.sync()
-	global.itemRecords.sync()
-	global.commandRecords.sync()
-    global.errorTable.sync()
+	await global.userRecords.sync()
+	await global.serverRecords.sync()
+	await global.adminlogRecords.sync()
+	await global.inventoryRecords.sync()
+	await global.itemRecords.sync()
+	await global.commandRecords.sync()
+    await global.errorTable.sync()
 }
 
 module.exports = {

@@ -1,5 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { Permissions, MessageEmbed } = require("discord.js")
+const { Permissions, EmbedBuilder, SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -32,7 +31,7 @@ module.exports = {
 		} else {
 			reason = interaction.options.getString("reason")
 		}
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 			.setColor("GOLD")
 			.setTitle("You have been warned!")
 			.setThumbnail("https://i.imgur.com/w5CDAw7.png")

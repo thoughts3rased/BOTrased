@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
+const { SlashCommandBuilder } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -31,25 +31,25 @@ module.exports = {
 			result.push(fruitTable[Math.floor(Math.random()*(fruitTable.length-1))])
 		}
 		await interaction.editReply(`${result[0]} :question: :question:`)
-		setTimeout(function(){
-			interaction.editReply(`${result[0]} ${result[1]} :question:`)
-			setTimeout(function(){
-				interaction.editReply(`${result[0]} ${result[1]} ${result[2]}`).then(() =>{
+		setTimeout(async function(){
+			await interaction.editReply(`${result[0]} ${result[1]} :question:`)
+			setTimeout(async function(){
+				await interaction.editReply(`${result[0]} ${result[1]} ${result[2]}`).then(async () =>{
 					var payout = 0
 					if (result[0] === result[1] && result[1] === result[2]){
 						payout = interaction.options.getInteger("bet") * fruitRewardDict[result[0]]
 						if (result[0] != ":watermelon:"){
-							interaction.followUp(`Congratulations, you've won ${payout} credits!`)
+							await interaction.followUp(`Congratulations, you've won ${payout} credits!`)
 						} else {
-							interaction.followUp(`Hold on... Woah! Congratulations! You've hit the jackpot, meaning you've won 50 times the amount you bet! Enjoy your ${payout} credits!`)
+							await interaction.followUp(`Hold on... Woah! Congratulations! You've hit the jackpot, meaning you've won 50 times the amount you bet! Enjoy your ${payout} credits!`)
 						}
 					} else if (result[0] === result[1]){
 						payout = interaction.options.getInteger("bet")
-						interaction.followUp("You've won your money back by matching two fruits! How about trying your luck again?")
+						await interaction.followUp("You've won your money back by matching two fruits! How about trying your luck again?")
 					} else {
-						interaction.followUp("Unfortunately you've lost this time, better luck next time!")
+						await interaction.followUp("Unfortunately you've lost this time, better luck next time!")
 					}
-					userRecords.increment({money: payout}, {where: {userID: interaction.user.id}})
+					await userRecords.increment({money: payout}, {where: {userID: interaction.user.id}})
 				})
 			}, 500)
 		}, 1000)

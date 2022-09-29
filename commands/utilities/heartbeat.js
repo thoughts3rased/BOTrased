@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
+const { SlashCommandBuilder } = require("discord.js")
 
 //Simple command sure, but I mostly keep this around to use as a nice copy/paste template.
 //Should be noted that this may get replaced by some sort of status command later on down the line.

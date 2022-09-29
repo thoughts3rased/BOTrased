@@ -1,6 +1,5 @@
-const { SlashCommandBuilder } = require("@discordjs/builders")
-const { MessageEmbed, MessageButton } = require("discord.js")
-const paginationEmbed = require("discordjs-button-pagination")
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require("discord.js")
+const paginationEmbed = require("../../helpers/paginationEmbed")
 const fs = require("fs")
 const readline = require("readline")
 
@@ -33,7 +32,7 @@ module.exports = {
 				j++
 			}
 			//console.log(embedTitle, embedBody)
-			var embed = new MessageEmbed()
+			var embed = new EmbedBuilder()
 				.setColor("DARK_PURPLE")
 				.setTitle(embedTitle)
 				.setDescription(embedBody)
@@ -43,14 +42,14 @@ module.exports = {
         
 		//console.log(pages)
 		const buttonList = [
-			new MessageButton()
+			new ButtonBuilder()
 				.setCustomId("previousbtn")
 				.setLabel("Previous Changelog")
-				.setStyle("DANGER"),
-			new MessageButton()
+				.setStyle(ButtonStyle.Danger),
+			new ButtonBuilder()
 				.setCustomId("nextbtn")
 				.setLabel("Next Changelog")
-				.setStyle("SUCCESS")
+				.setStyle(ButtonStyle.Success)
 		]
         
 		paginationEmbed(interaction, pages, buttonList)    
