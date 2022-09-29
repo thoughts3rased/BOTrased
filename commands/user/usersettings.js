@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder, Colors } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -83,7 +83,7 @@ module.exports = {
 		case "show":
 			const states = {1: "Enabled", 0: "Disabled"}
 			const embed = new EmbedBuilder()
-				.setColor("LIGHT_GREY")
+				.setColor(Colors.LightGrey)
 				.setTitle(`${interaction.user.username}'s settings configuration`)
 				.addFields(
 					{name: "Level Up Messages:", value: `${states[userRecord.get("levelUpMessage")]}`},

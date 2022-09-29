@@ -44,7 +44,7 @@ const messagesPerMinute = io.meter({
 })
 
 // Define Sequelize Tables
-await defineTables()
+defineTables()
 
 client.commands = new Collection()
 

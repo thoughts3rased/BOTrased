@@ -11,12 +11,12 @@ module.exports = {
             .setRequired(true)
         ),
 	async execute(interaction) {
-		await userRecords.increment({money: interaction.options.getInteger("amount")})
+		await userRecords.increment({money: interaction.options.getInteger("amount")}, {where: {}})
         .then(async () => {
-            await interaction.Reply(`:white_check_mark: Successfully compensated all users with ${interaction.options.getInteger("amount")}`)
+            await interaction.reply(`:white_check_mark: Successfully compensated all users with ${interaction.options.getInteger("amount")} credits.`)
         })
         .catch(async (error) =>{
-            await interaction.Reply(`:x: Failed to compensate all users.\n Full stack trace: ${'```'}${error.stack}${'```'}`)
+            await interaction.reply(`:x: Failed to compensate all users.\n Full stack trace: ${'```'}${error.stack}${'```'}`)
         })
 	}
 }

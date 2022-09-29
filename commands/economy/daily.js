@@ -8,9 +8,9 @@ module.exports = {
 		const user = await global.userRecords.findOne({where: {userID: interaction.user.id}})
 		let timeRemainingSecs
         
-		if (user.get("lastdaily") != null){ //if a user has claimed a daily before
+		if (await user.get("lastdaily") != null){ //if a user has claimed a daily before
 			//calculate the amount of seconds until their next daily handout
-			timeRemainingSecs = (user.get("lastdaily") + 86400) -  Math.floor(Date.now() / 1000)
+			timeRemainingSecs = (await user.get("lastdaily") + 86400) -  Math.floor(Date.now() / 1000)
 		} else {
 			//otherwise, they've never claimed a daily before and we can just set the amount of seconds remaining to zero
 			timeRemainingSecs = 0

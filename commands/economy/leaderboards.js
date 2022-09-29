@@ -1,5 +1,5 @@
-const { EmbedBuilder, MessageButton, SlashCommandBuilder } = require("discord.js")
-const paginationEmbed = require("discordjs-button-pagination")
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require("discord.js")
+const paginationEmbed = require("../../helpers/paginationEmbed")
 
 
 module.exports = {
@@ -50,20 +50,18 @@ module.exports = {
 			pages.push(embed)
 		}
         
-		// //buttons to be passed through to the pagination module
-		// const buttonList = [
-		// 	new MessageButton()
-		// 		.setCustomId("previousbtn")
-		// 		.setLabel("Previous Page")
-		// 		.setStyle("DANGER"),
-		// 	new MessageButton()
-		// 		.setCustomId("nextbtn")
-		// 		.setLabel("Next Page")
-		// 		.setStyle("SUCCESS")
-		// ]
-		// paginationEmbed(interaction, pages, buttonList)
+		//buttons to be passed through to the pagination module
+		const buttonList = [
+			new ButtonBuilder()
+				.setCustomId("previousbtn")
+				.setLabel("Previous Page")
+				.setStyle(ButtonStyle.Danger),
+			new ButtonBuilder()
+				.setCustomId("nextbtn")
+				.setLabel("Next Page")
+				.setStyle(ButtonStyle.Success)
+		]
+		paginationEmbed(interaction, pages, buttonList)
 
-
-		interaction.editReply({ embeds: pages[0]})
 	},
 }

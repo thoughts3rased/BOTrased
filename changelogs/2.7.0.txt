@@ -1,12 +1,12 @@
-Changelog for XX/09/2022 - V 2.7.0
+Changelog for 29/09/2022 - V 2.7.0
 
 **__BUG FIXES__**:
 + Fixed the changelog command not working
 + (Hopefully) fixed an issue where BOTrased would become unresponsive for long periods of time
 
 **__COMMAND CHANGES__**:
-- /leaderboard has been disabled. This is due to the bot hitting rate limits while trying to generate the leaderboard. It will remain disabled until further notice.
 + Bot-side permission checks have been deprecated in favour of slash command permissions. Affects: /ban, /kick, /nickname, /clear, /modlog, /serversettings, /warn
++ Added more owner commands
 
 **__MISC CHANGES__**:
 + Updated multiple packages

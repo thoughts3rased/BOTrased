@@ -1,4 +1,4 @@
-const { EmbedBuilder, SlashCommandBuilder } = require("discord.js")
+const { EmbedBuilder, SlashCommandBuilder, Colors } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -29,7 +29,7 @@ module.exports = {
         
 		//check to see if the target user has a profile
 		if (targetUser == null){
-			interaction.reply("This user does not have a profile.")
+			await interaction.reply("This user does not have a profile.")
 			return
 		}
         
@@ -56,7 +56,7 @@ module.exports = {
             * For users above level 400, it should be a gold colour
             */
 			if (targetUser.get("level") < 100){
-				profileColour = "LIGHT_GREY"
+				profileColour = Colors.LightGrey
 			} else if (targetUser.get("level") < 200){
 				profileColour = [166,121,18]
 			} else if (targetUser.get("level") < 400){
