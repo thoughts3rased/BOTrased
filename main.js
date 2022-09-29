@@ -9,7 +9,7 @@ const { reportCommandUsage } = require("./helpers/reportCommandUsage.js")
 const crypto = require("crypto")
 
 
-const client = new Client({intents: [GatewayIntentBits.Guilds]})
+const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]})
 global.errorCount = 0
 
 global.maintenanceMode = false
