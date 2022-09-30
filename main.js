@@ -65,50 +65,11 @@ commandFolders.forEach(folder => {
 })
 
 client.once("ready", async () => {
-	//set a presence showing that the bot is booting.
-	client.user.setPresence({ activities: [{ name: "Initialising..." }], status: "idle" })
     
 	// Sync sequelize tables
 	await syncTables()
 
 	console.info(`Ready. Logged in as ${client.user.username}`)
-    
-	//set status showing that the bot has finished booting
-	client.user.setPresence({ activities: [{ name: "Ready." }], status: "online" })
-
-	setInterval(async () => {
-		if (maintenanceMode){
-			return
-		}
-		else{
-			//these are the status messages that the bot will randomly pick from and cycle through
-			const statusMessages = [
-				"Peek at my insides on github!",
-				"Now supports slash commands!",
-				`Currently serving ${client.guilds.cache.size} servers!`,
-				"Bleep-bloop-blop",
-				"I have a little brother called TESTrased!",
-				"Check the changelog with /changelog!",
-				"Have you remembered to use /daily today?",
-				"Got any servers you'd like to add me to?",
-				"Touching grass",
-				"Providing input for your mother",
-				"What da dog doin?",
-				"Currently schizing",
-				"Elden Ring",
-				"Participating in a minor amount of social tomfoolery",
-				"The whip and nene",
-				"Donating to Wikipedia",
-				"Pollution Simulator",
-				"WageCage Simulator",
-				"You can do it when you B&Q it",
-				"Currently clubbing seals for XP"
-			]
-			// generate random number between 1 and list length.
-			const randomIndex = Math.floor(Math.random() * (statusMessages.length - 1) + 1)
-			await client.user.setPresence({activities: [{name: statusMessages[randomIndex]}], status: "online"})
-		}
-	}, 900000)
 })
 setInterval(async () => {
 	pm2ServerCount.set(client.guilds.cache.size)
