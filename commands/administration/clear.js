@@ -21,24 +21,23 @@ module.exports = {
 			targetChannel = interaction.options.getChannel("targetchannel")
 		}
 
-		await interaction.deferReply().then(() => {
-			targetChannel.messages.fetch({limit: interaction.options.getInteger("amount")}).then((messages) => {
-				messages.forEach((message) => {
+		await targetChannel.messages.fetch({limit: interaction.options.getInteger("amount")})
+			.then(async (messages) => {
+				messages.forEach(async (message) => {
 					//We don't want the original interaction message deleting since that would cause an error, so we check for it during deletion
 					if (message.author.id != interaction.client.id && !message.interaction){
-						message.delete()
+						await message.delete()
 					}
 				})
-				interaction.editReply(`Successfully deleted ${messages.size} messages.`)
-			}).catch((e) => {
+				await interaction.editReply(`Successfully deleted ${messages.size} messages.`)
+			}).catch(async (e) => {
 				console.error(e)
-				interaction.editReply(`An error occurred during message deletion. Traceback:\n\`\`\`${e}\`\`\`\n(Please send this to the developer)`)
-			}).then(() => {
-				global.adminlogRecords.create({serverID: interaction.guild.id, recipientID: targetChannel.id, adminID: interaction.user.id, type: "clear", reason: interaction.options.getInteger("amount"), time: Math.floor(Date.now() /1000), botUsed: true})
-			}).catch((e) => {
+				await interaction.editReply(`An error occurred during message deletion. Traceback:\n\`\`\`${e}\`\`\`\n(Please send this to the developer)`)
+			}).then(async () => {
+				await global.adminlogRecords.create({serverID: interaction.guild.id, recipientID: targetChannel.id, adminID: interaction.user.id, type: "clear", reason: interaction.options.getInteger("amount"), time: Math.floor(Date.now() /1000), botUsed: true})
+			}).catch(async (e) => {
 				console.error(e)
-				interaction.followUp({content: "There was an error recording this administrative action.", ephemeral: true})
+				await interaction.followUp({content: "There was an error recording this administrative action.", ephemeral: true})
 			})
-		})
-	},
-}
+		}
+	}

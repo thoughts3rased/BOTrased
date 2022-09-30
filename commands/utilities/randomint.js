@@ -23,9 +23,9 @@ module.exports = {
 			upper = interaction.options.getInteger("number1")
 		}
 		if (lower > upper){
-			await interaction.reply("Your lower limit must be lower than your higher limit.")
+			await interaction.editReply("Your lower limit must be lower than your higher limit.")
 			return
 		}
-		await interaction.reply(`Your generated number is ${Math.floor(Math.random() * (upper - lower) ) + lower}`)
+		await interaction.editReply(`Your generated number is ${Math.floor(Math.random() * (upper - lower) ) + lower}`)
 	},
 }

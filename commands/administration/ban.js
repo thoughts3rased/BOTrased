@@ -17,12 +17,11 @@ module.exports = {
 				.setRequired(false)),
 	async execute(interaction) {
 		if(interaction.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("You cannot ban yourself.")
+			return await interaction.editReply("You cannot ban yourself.")
 		}
 		if(interaction.client.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("I can't ban myself, however if you'd like me to leave, kick me manually.")
+			return await interaction.editReply("I can't ban myself, however if you'd like me to leave, kick me manually.")
 		}
-		await interaction.deferReply()
 		let reason
 		if (!interaction.options.getString("reason")){
 			reason = "No reason given."

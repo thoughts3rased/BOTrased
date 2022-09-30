@@ -16,15 +16,14 @@ module.exports = {
 				.setRequired(false)),
 	async execute(interaction) {
 		if(!interaction.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS, true)){
-			return await interaction.reply("You do not have the appropriate permissions to use this command.")
+			return await interaction.editReply("You do not have the appropriate permissions to use this command.")
 		}
 		if(interaction.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("You cannot warn yourself.")
+			return await interaction.editReply("You cannot warn yourself.")
 		}
 		if(interaction.client.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("I can't warn myself, that's mean!")
+			return await interaction.editReply("I can't warn myself, that's mean!")
 		}
-		await interaction.deferReply()
 		let reason
 		if (!interaction.options.getString("reason")){
 			reason = "No reason given."
@@ -48,7 +47,7 @@ module.exports = {
 			await interaction.editReply("There was an issue sending this user their warn message.")
 		}
 		try{
-			const newRecord = adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser("target").id, adminID: interaction.user.id, type: "warn", reason: interaction.options.getString("reason"), time: Math.floor(Date.now() /1000), botUsed: true})
+			const newRecord = await adminlogRecords.create({serverID: interaction.guild.id, recipientID: interaction.options.getUser("target").id, adminID: interaction.user.id, type: "warn", reason: interaction.options.getString("reason"), time: Math.floor(Date.now() /1000), botUsed: true})
 			await interaction.followUp("Warn entry created.")
 		} catch(error){
 			console.error(error.stack)

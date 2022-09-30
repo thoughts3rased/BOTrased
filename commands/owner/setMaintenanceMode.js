@@ -14,7 +14,7 @@ module.exports = {
 	async execute(interaction) {
 		global.maintenanceMode = interaction.options.getString("state") == "true"
 
-        await interaction.reply(`Maintenance mode is now **${global.maintenanceMode ? "enabled" : "disabled"}**`)
+        await interaction.editReply(`Maintenance mode is now **${global.maintenanceMode ? "enabled" : "disabled"}**`)
 
         switch (interaction.options.getString("state")){
             case "true":

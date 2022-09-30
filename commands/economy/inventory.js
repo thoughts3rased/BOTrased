@@ -24,7 +24,7 @@ module.exports = {
             
 		})
 		if (!inventoryData || inventoryData.length === 0) {
-			return await interaction.reply("Your inventory is empty.")
+			return await interaction.editReply("Your inventory is empty.")
 		}
 		var pages = []
 		const visibleFlagDict = {"0": "", "1":" :eye:"}
@@ -42,7 +42,7 @@ module.exports = {
 		}
 
 		if (pages.length <= 1) {
-			return await interaction.reply({embeds: [pages[0]]})
+			return await interaction.editReply({embeds: [pages[0]]})
 		}
         
 		//buttons to be passed through to the pagination module

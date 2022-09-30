@@ -5,6 +5,6 @@ module.exports = {
 		.setName("throwerror")
 		.setDescription("Deliberately throw an error to check error handling"),
 	async execute(interaction) {
-		await interaction.reply(`${x.aaaaaa}`)
+		await interaction.editReply(`${x.aaaaaa}`)
 	},
 }

@@ -9,7 +9,6 @@ module.exports = {
             .setDescription("Look up an error code using an ID.")
             .setRequired(true)),
 	async execute(interaction) {
-		await interaction.deferReply()
 
         const errorResult = await global.errorTable.findByPk(interaction.options.getString("errorcode"))
 

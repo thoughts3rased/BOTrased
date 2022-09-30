@@ -8,6 +8,6 @@ module.exports = {
 		.setName("heartbeat")
 		.setDescription("Check to see if the bot is responsive."),
 	async execute(interaction) {
-		await interaction.reply("I'm alive!")
+		await interaction.editReply("I'm alive!")
 	},
 }

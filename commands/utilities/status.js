@@ -21,6 +21,6 @@ module.exports = {
 				{name: "Database Status:", value: `${connectionDict[dbStatus]}`},
 				{name: "Errors Encountered Since Boot:", value: `${errorCount}`}
 			)
-		await interaction.reply({embeds: [embed]})
+		await interaction.editReply({embeds: [embed]})
 	},
 }

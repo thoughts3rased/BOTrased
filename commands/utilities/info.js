@@ -20,7 +20,7 @@ module.exports = {
 				{name: "Creator and Maintainer", value: `${owner.username}#${owner.discriminator}`}
 			)
         
-		await interaction.reply({embeds: [embed]})
+		await interaction.editReply({embeds: [embed]})
 		//note to future self: don't add ping or any other sort of diagnostic data. This should be in a status command of some sort.
 	},
 }

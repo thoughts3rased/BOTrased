@@ -20,7 +20,6 @@ module.exports = {
 	async execute(interaction) {
 		switch(interaction.options.getSubcommand()){
 		case "view":
-			await interaction.deferReply()
 			const shopDataArray = []
 			const shopData = await itemRecords.findAll(
 				{where: {purchasable : 1}}).then(
@@ -72,7 +71,6 @@ module.exports = {
 
 			
 		case "buy":
-			await interaction.deferReply()
 			const item = await itemRecords.findOne({where: {itemID: interaction.options.getInteger("itemid"), purchasable: 1}})
 			const user = await userRecords.findOne({where: {userID: interaction.user.id}})
 			if(!item){

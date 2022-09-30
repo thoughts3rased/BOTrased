@@ -79,12 +79,14 @@ setInterval(async () => {
 client.on("interactionCreate", async interaction => {
 	if (!interaction.isChatInputCommand()) return
 
+	await interaction.deferReply()
+
 	if (maintenanceMode && !config.maintenanceSafeCommands.includes(interaction.commandName)){
-		return await interaction.reply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
+		return await interaction.editReply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
 	}
 
 	if (config.disabledCommands.includes(interaction.commandName)){
-		return await interaction.reply(":x: This command has been disabled. Check the /changelog to see why.")
+		return await interaction.editReply(":x: This command has been disabled. Check the /changelog to see why.")
 	}
 
 	const command = await client.commands.get(interaction.commandName)

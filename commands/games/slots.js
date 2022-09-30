@@ -12,11 +12,11 @@ module.exports = {
 	async execute(interaction) {
 		const user = await userRecords.findOne({where: {userID: interaction.user.id}})
 		if (user.get("money") < interaction.options.getInteger("bet")){
-			return await interaction.reply(":x: You don't have enough credits to bet that amount.")
+			return await interaction.editReply(":x: You don't have enough credits to bet that amount.")
 		} else if (interaction.options.getInteger("bet") < 0) {
-			return await interaction.reply(":x: You cannot bet an amount that is less than 0.")
+			return await interaction.editReply(":x: You cannot bet an amount that is less than 0.")
 		}
-		await interaction.reply(":question: :question: :question:")
+		await interaction.editReply(":question: :question: :question:")
 		await userRecords.increment({money: 0 - interaction.options.getInteger("bet")}, {where: {userID: interaction.user.id}})
 		const fruitTable = fruits = [":watermelon:", ":grapes:", ":grapes:",  ":banana:", ":banana:", ":banana:",  ":pineapple:", ":pineapple:", ":pineapple:", ":pineapple:",  ":cherries:", ":cherries:", ":cherries:", ":cherries:", ":cherries:"]
 		const fruitRewardDict = {

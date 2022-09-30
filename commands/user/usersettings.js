@@ -61,24 +61,24 @@ module.exports = {
 		case "userlevelupmessage":
 			const result = {"1": "**ON**", "0": "**OFF**"}
 			await userRecord.update({levelUpMessage: interaction.options.getString("state")}, {where: {userID: interaction.user.id}})
-			await interaction.reply(`Level up messages are now turned ${result[interaction.options.getString("state")]} for you.`)
+			await interaction.editReply(`Level up messages are now turned ${result[interaction.options.getString("state")]} for you.`)
 			break
 		case "profilemessage":
 			await userRecord.update({message: interaction.options.getString("newmessage")}, {where: {userID: interaction.user.id}})
-			await interaction.reply(`Your profile message has been set to:\n${interaction.options.getString("newmessage")}`)   
+			await interaction.editReply(`Your profile message has been set to:\n${interaction.options.getString("newmessage")}`)   
 			break
 		case "clearprofilemessage":
 			await userRecord.update({message: null}, {where: {userID: interaction.user.id}})
-			await interaction.reply("Profile message cleared successfully.")    
+			await interaction.editReply("Profile message cleared successfully.")    
 			break
 		case "profilecolour":
 			const colour = interaction.options.getString("colour").toLowerCase()
 			if (colour.length != 6 || !colour.match(/^[0123456789abcdef]+$/g)){
-				await interaction.reply("That is not a valid hex value. Please ensure you remove the # and try again.")
+				await interaction.editReply("That is not a valid hex value. Please ensure you remove the # and try again.")
 				return
 			}
 			await userRecord.update({embedColour: colour}, {where: {userID: interaction.user.id}})
-			await interaction.reply("Profile colour successfully updated.")
+			await interaction.editReply("Profile colour successfully updated.")
 			break
 		case "show":
 			const states = {1: "Enabled", 0: "Disabled"}
@@ -95,23 +95,23 @@ module.exports = {
 					{name: "Profile Message:", value: `${userRecord.get("message")}`}
 				)
 			}
-			await interaction.reply({embeds: [embed]})
+			await interaction.editReply({embeds: [embed]})
 			break
 		case "displaybadge":
 			const userInventory = await inventoryRecords.findOne({where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
 			const targetBadge = await itemRecords.findOne({where: {itemID: interaction.options.getInteger("itemid"), type: "badge"}})
 			if (!userInventory){
-				return await interaction.reply("You do not own this item.")
+				return await interaction.editReply("You do not own this item.")
 			}
 			if(!targetBadge){
-				return await interaction.reply("Invalid badge selected.")
+				return await interaction.editReply("Invalid badge selected.")
 			}
 			if (userInventory.get("showOnProfile") == 1){
 				await userInventory.update({showOnProfile: 0}, {where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
-				return await interaction.reply(`Your ${targetBadge.get("name")} has been hidden from your profile.`)
+				return await interaction.editReply(`Your ${targetBadge.get("name")} has been hidden from your profile.`)
 			}
 			await userInventory.update({showOnProfile: 1}, {where: {userID: interaction.user.id, itemID: interaction.options.getInteger("itemid")}})
-			return await interaction.reply(`Your ${targetBadge.get("name")} will now be shown on your profile.`)
+			return await interaction.editReply(`Your ${targetBadge.get("name")} will now be shown on your profile.`)
             
 		}
 	},

@@ -15,7 +15,6 @@ module.exports = {
 					{ name: "experience", value: "exp" }
 				)),
 	async execute(interaction) {
-		await interaction.deferReply()
 		//get the top 100 records from the database
 		const leaderboardDataResult = await global.userRecords.findAll({order: [[interaction.options.getString("category"), "DESC"]]}, {limit: 100}).then((leaderboardData) => {return leaderboardData})
         

@@ -17,12 +17,11 @@ module.exports = {
 				.setRequired(false)),
 	async execute(interaction) {
 		if(interaction.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("You cannot kick yourself.")
+			return await interaction.editReply("You cannot kick yourself.")
 		}
 		if(interaction.client.user.id == interaction.options.getUser("target").id){
-			return await interaction.reply("I can't kick myself, however if you'd like me to leave, kick me manually.")
+			return await interaction.editReply("I can't kick myself, however if you'd like me to leave, kick me manually.")
 		}
-		await interaction.deferReply()
 		let reason
 		if (!interaction.options.getString("reason")){
 			reason = "No reason given."
@@ -38,21 +37,21 @@ module.exports = {
 				{name: "Kicked by:", value: `${interaction.user.username}#${interaction.user.discriminator}`}
 			)
 		await interaction.options.getMember("target").createDM()
-			.then((DMChannel) => {
-				let kickMessage = DMChannel.send({embeds: [embed]}).then(() => {
-					interaction.editReply("Kick message sent successfully.")
+			.then(async (DMChannel) => {
+				let kickMessage = await DMChannel.send({embeds: [embed]}).then(async () => {
+					await interaction.editReply("Kick message sent successfully.")
 				})    
-					.catch((e) => {
+					.catch(async (e) => {
 						console.error(e)
-						interaction.editReply("There was an issue sending this user their kick message.")
+						await interaction.editReply("There was an issue sending this user their kick message.")
 					})
-					.then(() => {
-						interaction.options.getMember("target").kick().then(() => {
-							interaction.followUp("Kick performed successfully.")
+					.then(async () => {
+						await interaction.options.getMember("target").kick().then(async () => {
+							await interaction.followUp("Kick performed successfully.")
 						})
-							.catch((e) => {
-								interaction.followUp("There was an issue while trying to kick this user.")
-								kickMessage.delete()
+							.catch(async (e) => {
+								await interaction.followUp("There was an issue while trying to kick this user.")
+								await kickMessage.delete()
 								console.error(e.stack)
 							})
 					})

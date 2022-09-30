@@ -16,10 +16,10 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		if (interaction.user.id === interaction.options.getUser("recipient").id){ //make sure that the user hasn't set themselves as a target
-			return await interaction.reply("You cannot gift credits to yourself.")
+			return await interaction.editReply("You cannot gift credits to yourself.")
 		}
 		if (interaction.options.getInteger("amount") <= 0){ //make sure that the user hasn't set a gift amount below zero
-			return await interaction.reply("You cannot gift less than a single credit.")
+			return await interaction.editReply("You cannot gift less than a single credit.")
 		}
 		//get the user records of both the interaction author and the recipient
 		const author = await global.userRecords.findOne({where: {userID: interaction.user.id}})
@@ -27,16 +27,16 @@ module.exports = {
         
 		//check if both the author and recipient have user records in the database
 		if (!recipient){
-			await interaction.reply("Your selected recipient does not have a user profile.")
+			await interaction.editReply("Your selected recipient does not have a user profile.")
 			return
 		}
 		if (!author){
-			await interaction.reply("You do not have a user profile.")
+			await interaction.editReply("You do not have a user profile.")
 			return
 		}
         
 		if (interaction.options.getInteger("amount") > author.get("money")){ //check to see if the user has enough money to gift
-			await interaction.reply("You do not have enough credits to gift this amount.")
+			await interaction.editReply("You do not have enough credits to gift this amount.")
 			return
 		}
 
@@ -45,6 +45,6 @@ module.exports = {
 		recipient.increment("money", {by: interaction.options.getInteger("amount")}, {where: {userID: interaction.options.getUser("recipient").id}})
         
 		//reply with confirmation message
-		await interaction.reply(`You have successfully gifted ${interaction.options.getInteger("amount")} credits to ${interaction.options.getUser("recipient")}.`)
+		await interaction.editReply(`You have successfully gifted ${interaction.options.getInteger("amount")} credits to ${interaction.options.getUser("recipient")}.`)
 	},
 }

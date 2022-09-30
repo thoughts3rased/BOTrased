@@ -18,9 +18,6 @@ module.exports = {
 					{ name: "warn", value: "warn" }
 				)),
 	async execute(interaction) {
-        
-		//This may take a while to generate the modlog, so we need to defer the reply to give us 15 minutes to generate our response
-		await interaction.deferReply()
 
 		//I don't like how I've had to do this, fix later and make it cleaner
 		//If the user doesn't specify an action we want to pull all modlog entries for that server.

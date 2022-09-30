@@ -28,13 +28,13 @@ module.exports = {
 		switch(interaction.options.getSubcommand()){
 		case "levelupmessage":
 			await serverRecord.update({levelUpMessage: interaction.options.getString("state")}, {where: {serverID: `${interaction.guild.id}`}})
-			await interaction.reply(`Level up messages are now globally **${statuses[interaction.options.getString("state")].toUpperCase()}** for the server.`)
+			await interaction.editReply(`Level up messages are now globally **${statuses[interaction.options.getString("state")].toUpperCase()}** for the server.`)
 			break
 		case "show":
 			var embed = new EmbedBuilder()
 				.setTitle(`Settings configuration for ${interaction.guild.name}`)
 				.addFields({name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`})
-			await interaction.reply({embeds: [embed]})
+			await interaction.editReply({embeds: [embed]})
 			break
 		}
 	},

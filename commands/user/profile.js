@@ -29,7 +29,7 @@ module.exports = {
         
 		//check to see if the target user has a profile
 		if (targetUser == null){
-			await interaction.reply("This user does not have a profile.")
+			await interaction.editReply("This user does not have a profile.")
 			return
 		}
         
@@ -114,6 +114,6 @@ module.exports = {
 			})
 		}
 		//reply to the command with the embed
-		await interaction.reply({embeds: [embed]})
+		await interaction.editReply({embeds: [embed]})
 	},
 }

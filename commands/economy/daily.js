@@ -39,14 +39,14 @@ module.exports = {
 			await user.update({lastdaily: Math.floor(Date.now()/1000)}, {where: {userID: interaction.user.id}})
             
 			if (lucky){ //special message for a lucky handout
-				interaction.reply(`Amazing! Your total handout comes to **${creditAmount}** credits!`)
+				interaction.editReply(`Amazing! Your total handout comes to **${creditAmount}** credits!`)
 				return
 			}
-			interaction.reply(`Your daily handout comes to **${creditAmount}** credits.`)
+			interaction.editReply(`Your daily handout comes to **${creditAmount}** credits.`)
 
 		} else { //if the amount of remaining seconds isn't zero, the user isn't entitled to a daily handout and we should reply with a timestamp of their next handout.
 			const nextDailyEpochStamp = Math.floor(Date.now() /1000) + timeRemainingSecs
-			interaction.reply(`You've claimed your daily too recently. Next handout at: **<t:${nextDailyEpochStamp}>**`)
+			interaction.editReply(`You've claimed your daily too recently. Next handout at: **<t:${nextDailyEpochStamp}>**`)
 		}
 	},
 }
