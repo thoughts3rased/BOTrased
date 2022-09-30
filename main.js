@@ -71,6 +71,7 @@ client.once("ready", async () => {
 
 	console.info(`Ready. Logged in as ${client.user.username}`)
 })
+
 setInterval(async () => {
 	pm2ServerCount.set(client.guilds.cache.size)
 }, 1000)
@@ -80,32 +81,29 @@ client.on("interactionCreate", async interaction => {
 	if (!interaction.isChatInputCommand()) return
 
 	await interaction.deferReply()
+	.then( async () => {
+		const command = await client.commands.get(interaction.commandName)
 
-	if (maintenanceMode && !config.maintenanceSafeCommands.includes(interaction.commandName)){
-		return await interaction.editReply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
-	}
-
-	if (config.disabledCommands.includes(interaction.commandName)){
-		return await interaction.editReply(":x: This command has been disabled. Check the /changelog to see why.")
-	}
-
-	const command = await client.commands.get(interaction.commandName)
-
-	if (!command) return
-	
-	await reportCommandUsage(command)
-
-	commandsServed.inc()
-	commandsPerMinute.mark()
-
-	try{
-		await command.execute(interaction)
-	} catch (error) {
-		if (!interaction.deferred && !interaction.replied){
-			await interaction.deferReply()
+		if (!command) return
+		
+		if (maintenanceMode && !config.maintenanceSafeCommands.includes(interaction.commandName)){
+			return await interaction.editReply(":warning: Maintenance mode is currently **enabled**, meaning that no commands work at this moment in time.")
 		}
-		const errorId = crypto.randomUUID()
-		await reportError(errorId, error.stack, command.data.name, interaction.user.id, interaction.guild.id)
+	
+		if (config.disabledCommands.includes(interaction.commandName)){
+			return await interaction.editReply(":x: This command has been disabled. Check the /changelog to see why.")
+		}
+
+		await reportCommandUsage(command)
+
+		commandsServed.inc()
+		commandsPerMinute.mark()
+
+		await command.execute(interaction)
+		.catch( async (e) => {
+			const errorId = crypto.randomUUID()
+
+			await reportError(errorId, error.stack, command.data.name, interaction.user.id, interaction.guild.id)
 			.then(async () => {
 				if (config.environment !== "dev") await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
 				else await interaction.editReply(`:x: An unexpected error occurred. Full stack trace: \`\`\`${error.stack}\`\`\``)
@@ -114,8 +112,13 @@ client.on("interactionCreate", async interaction => {
 				console.error(error)
 				await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nAn error report was generated, but failed to save. Please let Thoughts3rased#3006 know this has happened.`)
 			})
-		global.errorCount++
-	}
+
+			global.errorCount++
+		})
+	})
+	.catch((e) => {
+		console.error(e)
+	})
 })
 
 client.on("messageCreate", async message => {
