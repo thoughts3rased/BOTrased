@@ -2,3 +2,4 @@ Changelog for 30/09/2022 - V 2.7.1
 
 **__MISC CHANGES__**:
 - Removed BOTrased's rotating statuses to help aleviate missed interactions
++ BOTrased now defers all replies by default
