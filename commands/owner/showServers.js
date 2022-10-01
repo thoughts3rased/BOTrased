@@ -9,7 +9,7 @@ module.exports = {
         await interaction.client.guilds.fetch()
         .then(async (servers) => {
             servers.forEach(async server => {
-                serverText += `${server.name} - ${server.members.count} users\n`
+                serverText += `${server.name}\n`
             })
             const embed = new EmbedBuilder()
             .setTitle("BOTrased's servers")
