@@ -11,9 +11,9 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		const user = await userRecords.findOne({where: {userID: interaction.user.id}})
-		if (user.get("money") < interaction.options.getInteger("bet")){
+		if (await user.get("money") < await interaction.options.getInteger("bet")){
 			return await interaction.editReply(":x: You don't have enough credits to bet that amount.")
-		} else if (interaction.options.getInteger("bet") < 0) {
+		} else if (await interaction.options.getInteger("bet") < 0) {
 			return await interaction.editReply(":x: You cannot bet an amount that is less than 0.")
 		}
 		await interaction.editReply(":question: :question: :question:")
@@ -37,7 +37,7 @@ module.exports = {
 				await interaction.editReply(`${result[0]} ${result[1]} ${result[2]}`).then(async () =>{
 					var payout = 0
 					if (result[0] === result[1] && result[1] === result[2]){
-						payout = interaction.options.getInteger("bet") * fruitRewardDict[result[0]]
+						payout = await interaction.options.getInteger("bet") * fruitRewardDict[result[0]]
 						if (result[0] != ":watermelon:"){
 							await interaction.followUp(`Congratulations, you've won ${payout} credits!`)
 						} else {

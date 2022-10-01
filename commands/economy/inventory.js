@@ -24,7 +24,7 @@ module.exports = {
             
 		})
 		if (!inventoryData || inventoryData.length === 0) {
-			return await interaction.editReply("Your inventory is empty.")
+			return await interaction.editReply(":x: Your inventory is empty.")
 		}
 		var pages = []
 		const visibleFlagDict = {"0": "", "1":" :eye:"}

@@ -7,6 +7,7 @@ const { defineTables, syncTables } = require("./sequelizeDef.js")
 const { reportError } = require("./helpers/reportError")
 const { reportCommandUsage } = require("./helpers/reportCommandUsage.js")
 const crypto = require("crypto")
+const { AutoPoster } = require('topgg-autoposter')
 
 
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]})
@@ -42,6 +43,13 @@ const messagesPerMinute = io.meter({
 	name: "Messages read in the last minute",
 	unit: " messages"
 })
+
+let autoPoster
+
+if (config.environment !== "dev") {
+	autoPoster = AutoPoster(config.misctokens.topgg, client)
+}
+
 
 // Define Sequelize Tables
 defineTables()
@@ -100,13 +108,13 @@ client.on("interactionCreate", async interaction => {
 		commandsPerMinute.mark()
 
 		await command.execute(interaction)
-		.catch( async (e) => {
+		.catch( async (error) => {
 			const errorId = crypto.randomUUID()
 
 			await reportError(errorId, error.stack, command.data.name, interaction.user.id, interaction.guild.id)
-			.then(async () => {
+			.then(async (error) => {
 				if (config.environment !== "dev") await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
-				else await interaction.editReply(`:x: An unexpected error occurred. Full stack trace: \`\`\`${error.stack}\`\`\``)
+				else await interaction.editReply(`:x: An unexpected error occurred. Full stack trace: \`\`\`${error}\`\`\``)
 			})
 			.catch(async (error) => {
 				console.error(error)
@@ -157,6 +165,12 @@ client.on("messageCreate", async message => {
 			}
 		}
 	}
+})
+
+process.on("SIGTERM", () => {
+	client.destroy()
+	global.sequelize.close()
+	process.exit()
 })
 
 client.login(config.discord.token)

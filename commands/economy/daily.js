@@ -46,7 +46,7 @@ module.exports = {
 
 		} else { //if the amount of remaining seconds isn't zero, the user isn't entitled to a daily handout and we should reply with a timestamp of their next handout.
 			const nextDailyEpochStamp = Math.floor(Date.now() /1000) + timeRemainingSecs
-			interaction.editReply(`You've claimed your daily too recently. Next handout at: **<t:${nextDailyEpochStamp}>**`)
+			interaction.editReply(`:x: You've claimed your daily too recently. Next handout at: **<t:${nextDailyEpochStamp}>**`)
 		}
 	},
 }

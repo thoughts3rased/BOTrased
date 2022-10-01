@@ -33,7 +33,7 @@ module.exports = {
 		const processedModLogData = modLogData.map(result => result.dataValues)
 
 		if (processedModLogData.length === 0){
-			return await interaction.editReply("ⓘ There are no records for your server with the specified filters.")
+			return await interaction.editReply(":information_source: There are no records for your server with the specified filters.")
 		}
 
 		//Used to store the modlog data, in arrays of 10

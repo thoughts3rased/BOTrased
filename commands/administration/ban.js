@@ -17,10 +17,10 @@ module.exports = {
 				.setRequired(false)),
 	async execute(interaction) {
 		if(interaction.user.id == interaction.options.getUser("target").id){
-			return await interaction.editReply("You cannot ban yourself.")
+			return await interaction.editReply(":x: You cannot ban yourself.")
 		}
 		if(interaction.client.user.id == interaction.options.getUser("target").id){
-			return await interaction.editReply("I can't ban myself, however if you'd like me to leave, kick me manually.")
+			return await interaction.editReply(":x: I can't ban myself, however if you'd like me to leave, kick me manually.")
 		}
 		let reason
 		if (!interaction.options.getString("reason")){
@@ -43,7 +43,7 @@ module.exports = {
 				})    
 					.catch(async (e) => {
 						console.error(e.stack)
-						await interaction.editReply("There was an issue sending this user their ban message.")
+						await interaction.editReply(":x: There was an issue sending this user their ban message.")
 					})
 					.then(async () => {
 						await interaction.options.getMember("target").ban({days: 0, reason: reason})
@@ -51,7 +51,7 @@ module.exports = {
 							await interaction.followUp("Ban performed successfully.")
 						})
 							.catch(async (e) => {
-								await interaction.followUp("There was an issue while trying to ban this user.")
+								await interaction.followUp(":x: There was an issue while trying to ban this user.")
 								banMessage.delete()
 								console.error(e.stack)
 							})

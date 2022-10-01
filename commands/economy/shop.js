@@ -1,5 +1,5 @@
-const { EmbedBuilder, MessageButton, SlashCommandBuilder } = require("discord.js")
-const pagingationEmbed = require("discordjs-button-pagination")
+const { EmbedBuilder, ButtonBuilder, SlashCommandBuilder } = require("discord.js")
+const pagingationEmbed = require("../../helpers/paginationEmbed")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("shop")
@@ -21,7 +21,7 @@ module.exports = {
 		switch(interaction.options.getSubcommand()){
 		case "view":
 			const shopDataArray = []
-			const shopData = await itemRecords.findAll(
+			await itemRecords.findAll(
 				{where: {purchasable : 1}}).then(
 				records => {
 					records.forEach((record) =>{
@@ -57,11 +57,11 @@ module.exports = {
 				return await interaction.editReply({embeds: [pages[0]]})
 			}
 			const buttonList = [
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId("previousbtn")
 					.setLabel("Previous Page")
 					.setStyle("DANGER"),
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId("nextbtn")
 					.setLabel("Next Page")
 					.setStyle("SUCCESS")

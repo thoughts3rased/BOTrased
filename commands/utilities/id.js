@@ -10,9 +10,9 @@ module.exports = {
 				.setRequired(false)),
 	async execute(interaction) {
 		//has the user specified a target that is not themselves?
-		if (interaction.options.getMember("target") != null && interaction.options.getMember("target").id != interaction.user.id){
+		if (await interaction.options.getMember("target") != null && await interaction.options.getMember("target").id != interaction.user.id){
 			//if so, give them a 3rd person message
-			await interaction.editReply(`<@${interaction.options.getMember("target").id}>'s user ID is ${interaction.options.getMember("target").id}.`)
+			await interaction.editReply(`<@${interaction.options.getMember("target").id}>'s user ID is ${await interaction.options.getMember("target").id}.`)
 		} else{
 			//otherwise, give them a 2nd person message
 			await interaction.editReply(`Your user ID is ${interaction.user.id}.`)

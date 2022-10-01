@@ -1,9 +1,10 @@
-const { Permissions, EmbedBuilder, SlashCommandBuilder } = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder, SlashCommandBuilder, Colors } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("warn")
 		.setDescription("Warns a user with a message in DMs. Requires \"Kick Members\" permission.")
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.addUserOption(option =>
 			option
 				.setName("target")
@@ -15,14 +16,11 @@ module.exports = {
 				.setDescription("The reason for warning this user.")
 				.setRequired(false)),
 	async execute(interaction) {
-		if(!interaction.member.permissions.has(Permissions.FLAGS.KICK_MEMBERS, true)){
-			return await interaction.editReply("You do not have the appropriate permissions to use this command.")
-		}
 		if(interaction.user.id == interaction.options.getUser("target").id){
-			return await interaction.editReply("You cannot warn yourself.")
+			return await interaction.editReply(":x: You cannot warn yourself.")
 		}
 		if(interaction.client.user.id == interaction.options.getUser("target").id){
-			return await interaction.editReply("I can't warn myself, that's mean!")
+			return await interaction.editReply(":x: I can't warn myself, that's mean!")
 		}
 		let reason
 		if (!interaction.options.getString("reason")){
@@ -31,7 +29,7 @@ module.exports = {
 			reason = interaction.options.getString("reason")
 		}
 		const embed = new EmbedBuilder()
-			.setColor("GOLD")
+			.setColor(Colors.Gold)
 			.setTitle("You have been warned!")
 			.setThumbnail("https://i.imgur.com/w5CDAw7.png")
 			.addFields(

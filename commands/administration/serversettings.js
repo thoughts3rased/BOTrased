@@ -1,4 +1,4 @@
-const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require("discord.js")
+const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, Colors } = require("discord.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -34,6 +34,7 @@ module.exports = {
 			var embed = new EmbedBuilder()
 				.setTitle(`Settings configuration for ${interaction.guild.name}`)
 				.addFields({name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`})
+				.setColor(Colors.Purple)
 			await interaction.editReply({embeds: [embed]})
 			break
 		}

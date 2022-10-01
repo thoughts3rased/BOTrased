@@ -15,6 +15,8 @@ async function reportError(errorId, errorStack, command = null, commandAuthor = 
         commandServerId: commandServer,
         time: Date.now() / 1000
     })
+
+    return errorStack
 }
 
 module.exports = {

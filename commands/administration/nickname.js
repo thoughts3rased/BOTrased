@@ -15,7 +15,7 @@ module.exports = {
 				.setRequired(true)),
 	async execute(interaction) {
 		if (interaction.options.getString("newnickname").length > 32){
-			return await interaction.editReply("The nickname you have entered is too long.")
+			return await interaction.editReply(":x: The nickname you have entered is too long.")
 		}
 		await interaction.options.getMember("target").setNickname(interaction.options.getString("newnickname"))
 			.then(async () => {
@@ -26,7 +26,7 @@ module.exports = {
 			})
 			.catch(async (e) =>{
 				console.error(e)
-				await interaction.followUp("There was an issue recording the action in the database.")
+				await interaction.followUp(":x: There was an issue recording the action in the database.")
 			})
 	},
 }
