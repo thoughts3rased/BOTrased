@@ -11,7 +11,7 @@ module.exports = {
 		var pages = []
 		let embedBody
 		let embedTitle
-		const filenames = await fs.promises.readdir("./changelogs").reverse()  
+		const filenames = fs.readdirSync("./changelogs").reverse()  
 		for(var i = 0; i < filenames.length; i++){
 			embedTitle = ""
 			embedBody = ""
