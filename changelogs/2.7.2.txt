@@ -1,0 +1,12 @@
+Changelog for 01/10/2022 - V 2.7.2
+
+**__MISC CHANGES__**:
++ Fixed inconsistency with error messages
++ Added back the top.gg autoposter
+
+**__BUG FIXES__**:
++ Fixed an issue which stopped the /shop command from initialising
+
+**__COMMAND CHANGES__**:
++ Added new owner only commands
++ De-spaghetti'd code for the flip command (my god was it bad for something so simple)
