@@ -2,7 +2,8 @@ module.exports = {
 	apps : [{
 		name   : "BOTrased",
 		script : "./main.js",
-		watch: true
+		watch: true,
+		exec_mode: "cluster"
 	}],
 
 	deploy: {
@@ -11,7 +12,7 @@ module.exports = {
 			"host" : "localhost",
 			"ref" : "origin/main",
 			"repo" : "git@github.com/thoughts3rased/BOTrased.git",
-			"post-setup" : "yarn install",
+			"post-setup" : "npm ci",
 			"path" : "."
 		}
 	}

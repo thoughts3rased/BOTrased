@@ -22,13 +22,18 @@ global.sequelize = new Sequelize(config.database.schema , config.database.user, 
 	logging: false
 })
 
+io.init({
+	tracing: true,
+	http: true
+})
+
 //defining of PM2 metrics
 const commandsServed = io.counter({
 	name: "Commands served since last boot",
-	unit: "commands"
+	unit: " commands"
 })
 const commandsPerMinute = io.meter({
-	name: "Commands served in the last minute",
+	name: "Commands served per second",
 	unit: " commands"
 })
 const pm2ServerCount = io.metric({
@@ -40,7 +45,7 @@ const messagesRead = io.counter({
 	unit: " messages"
 })
 const messagesPerMinute = io.meter({
-	name: "Messages read in the last minute",
+	name: "Messages read per second",
 	unit: " messages"
 })
 

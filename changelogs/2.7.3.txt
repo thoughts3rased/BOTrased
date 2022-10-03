@@ -1,0 +1,4 @@
+Changelog for 03/10/2022 - V 2.7.3
+
+**__MISC CHANGES__**:
++ Updated PM2 configurations and metrics for better troubleshooting
