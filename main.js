@@ -23,7 +23,7 @@ global.sequelize = new Sequelize(config.database.schema , config.database.user, 
 })
 
 io.init({
-	tracing: true,
+	transactions: true,
 	http: true
 })
 
