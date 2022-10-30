@@ -21,7 +21,17 @@ module.exports = {
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName("show")
-				.setDescription("Show the current settings configuration for the server.")),
+				.setDescription("Show the current settings configuration for the server."))
+		.addSubcommand(subcommand => 
+			subcommand
+				.setName("lockdown")
+				.setDescription("Locks down the server by immediately kicking all new members that join. Use with caution.")
+				.addBooleanOption(option => 
+					option
+						.setName("state")
+						.setDescription("The state of lockdown mode.")
+						.setRequired(true)
+						)),
 	async execute(interaction) {
 		const serverRecord = await global.serverRecords.findOne({where: {serverID: interaction.guild.id}})
 		const statuses = {1: "Enabled", 0: "Disabled"}
@@ -33,10 +43,18 @@ module.exports = {
 		case "show":
 			var embed = new EmbedBuilder()
 				.setTitle(`Settings configuration for ${interaction.guild.name}`)
-				.addFields({name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`})
+				.addFields(
+					{name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`},
+					{name: "Lockdown Mode", value: serverRecord.get("lockdownMode") === 1 ? "Enabled" : "Disabled"}
+				)
 				.setColor(Colors.Purple)
 			await interaction.editReply({embeds: [embed]})
 			break
+		case "lockdown":
+			await serverRecord.update({lockdownMode: interaction.options.getBoolean("state") ? 1 : 0}, {where: {serverID: `${interaction.guild.id}`}})
+			.then(async () => {
+				await interaction.editReply(`Lockdown mode is now **${interaction.options.getBoolean("state") === true ? "ENABLED**. New users who join will now be automatically kicked." : "DISABLED**. Users can now join without being automatically kicked."}`)
+			})
 		}
 	},
 }

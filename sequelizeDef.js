@@ -48,6 +48,11 @@ async function defineTables(){
         levelUpMessage: {
             type: Sequelize.TINYINT(1),
             defaultValue: 1
+        },
+        lockdownMode: {
+            type: Sequelize.TINYINT(1),
+            defaultValue: 0,
+            allowNull: false
         }
     }, {
         timestamps:false

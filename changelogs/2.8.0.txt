@@ -1,2 +1,8 @@
 Changelog for XX/10/2022 - V 2.8.0
 
+**__FEATURED CHANGE__**:
+Lockdown mode has been added as a server option! Got a raid going on with people generating invite links to your server to invite more people to raid? Just turn on lockdown mode! With lockdown mode, the bot will immediately kick any new users who join the server to prevent raids. Find it and turn it on under /serversettings lockdown! (Use command with caution, it will not automatically turn itself off!)
+
+**__COMMAND CHANGES__**:
++ /status now shows some extra technical information
++ /serversettings show now shows lockdown mode as an option

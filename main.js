@@ -10,7 +10,7 @@ const crypto = require("crypto")
 const { AutoPoster } = require('topgg-autoposter')
 
 
-const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages]})
+const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers]})
 global.errorCount = 0
 
 global.maintenanceMode = false
@@ -170,6 +170,21 @@ client.on("messageCreate", async message => {
 			}
 		}
 	}
+})
+
+client.on("guildMemberAdd", async member => {
+	console.log("Member joined!")
+	
+	server = await global.serverRecords.findOne({where: {serverID: member.guild.id}})
+
+	if (server.get("lockdownMode") === 0) return
+
+	await member.kick("Lockdown mode kick")
+})
+
+//Logging errors
+client.on("error", async error => {
+	console.warn(error?.stack)
 })
 
 process.on("SIGTERM", () => {
