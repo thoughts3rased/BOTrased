@@ -21,8 +21,8 @@ module.exports = {
 				{name: "Ping:", value: `${interaction.client.ws.ping}ms`},
 				{name: "Database Status:", value: `${connectionDict[dbStatus]}`},
 				{name: "Errors Encountered Since Boot:", value: `${errorCount}`},
-				{name: "Current Uptime", value: `${convertSecondsToHoursTimestamp(process.uptime())}`},
-				{name: "Maintenance Mode", value: `${maintenanceMode ? "Enabled" : "Disabled"}`}
+				{name: "Current Uptime:", value: `${convertSecondsToHoursTimestamp(process.uptime())}`},
+				{name: "Maintenance Mode:", value: `${maintenanceMode ? "Enabled" : "Disabled"}`}
 
 			)
 		await interaction.editReply({embeds: [embed]})

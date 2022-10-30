@@ -6,3 +6,4 @@ Lockdown mode has been added as a server option! Got a raid going on with people
 **__COMMAND CHANGES__**:
 + /status now shows some extra technical information
 + /serversettings show now shows lockdown mode as an option
++ /serversettings now shows the guild's icon in the embed

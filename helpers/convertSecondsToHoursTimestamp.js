@@ -1,9 +1,9 @@
 /**
  * Converts seconds to human readable format (1 hour, 35 minutes, 42 seconds)
- * @param {number} seconds The amount of time to convert
+ * @param {number} secs The amount of time to convert
  * @returns {string} The human readable string
  */
-const convertSecondsToHoursTimestamp = seconds => {
+const convertSecondsToHoursTimestamp = secs => {
     var sec_num = parseInt(secs, 10)
     var hours   = Math.floor(sec_num / 3600)
     var minutes = Math.floor(sec_num / 60) % 60

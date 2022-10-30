@@ -43,9 +43,10 @@ module.exports = {
 		case "show":
 			var embed = new EmbedBuilder()
 				.setTitle(`Settings configuration for ${interaction.guild.name}`)
+				.setThumbnail(interaction.guild.iconURL())
 				.addFields(
 					{name: "Level Up Messages:", value: `${statuses[serverRecord.get("levelUpMessage")]}`},
-					{name: "Lockdown Mode", value: serverRecord.get("lockdownMode") === 1 ? "Enabled" : "Disabled"}
+					{name: "Lockdown Mode:", value: serverRecord.get("lockdownMode") === 1 ? "Enabled" : "Disabled"}
 				)
 				.setColor(Colors.Purple)
 			await interaction.editReply({embeds: [embed]})
