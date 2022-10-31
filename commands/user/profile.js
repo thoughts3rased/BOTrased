@@ -99,7 +99,7 @@ module.exports = {
 		} else {
 			//otherwise, display a timestamp representing the time at which they can claim their daily handout again
 			const nextDailyEpochStamp = Math.floor(Date.now() /1000) + timeRemainingSecs
-			embed.addFields({name: "Daily Reset:", value: `Next daily reset in <t:${nextDailyEpochStamp}:R>`})
+			embed.addFields({name: "Daily Reset:", value: `Next daily reset <t:${nextDailyEpochStamp}:R>`})
 		}
         
 		//logic for displaying badges (if they have any)

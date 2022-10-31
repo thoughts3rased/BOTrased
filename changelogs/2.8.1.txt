@@ -1,0 +1,4 @@
+Changelog for XX/11/22 - V 2.8.1
+
+**__BUG FIXES__**:
++ Changed text in /profile for the daily timer so it no longer repeats the word 'in'
