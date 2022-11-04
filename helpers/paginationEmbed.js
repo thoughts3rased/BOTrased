@@ -3,7 +3,8 @@ const {
     Message,
     MessageEmbed,
     MessageButton,
-    ButtonStyle
+    ButtonStyle,
+    ButtonBuilder
   } = require("discord.js");
 
 /**
@@ -21,7 +22,18 @@ const {
     timeout = 120000
   ) => {
     if (!pages) throw new Error("Pages are not given.");
-    if (!buttonList) throw new Error("Buttons are not given.");
+    if (!buttonList) {
+      buttonList = [
+        new ButtonBuilder()
+          .setCustomId("previousbtn")
+          .setLabel("Previous Page")
+          .setStyle(ButtonStyle.Danger),
+        new ButtonBuilder()
+          .setCustomId("nextbtn")
+          .setLabel("Next Page")
+          .setStyle(ButtonStyle.Success)
+      ]
+    };
     if (buttonList[0].style === ButtonStyle.Link || buttonList[1].style === ButtonStyle.Link)
       throw new Error(
         "Link buttons are not supported"

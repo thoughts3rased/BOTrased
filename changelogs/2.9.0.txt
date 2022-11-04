@@ -1,10 +1,10 @@
 Changelog for XX/XX/XXXX - V 2.9.0
 
 **__FEATURED CHANGES__**:
-
 + AUTOROLES ARE HERE! You can now have BOTrased automatically assign new users a role. Use /serversettings autorole to set this up for new users!
-
 
 **__COMMAND CHANGES__**:
 + added /serversettings autorole enable
 + added /serversettings autorole setrole
+- removed /status
++ condensed /status information into a separate page in /info

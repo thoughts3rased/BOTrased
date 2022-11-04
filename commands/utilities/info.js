@@ -1,12 +1,24 @@
 const { EmbedBuilder, SlashCommandBuilder, Colors } = require("discord.js")
+const paginationEmbed = require("../../helpers/paginationEmbed")
+const convertSecondsToHoursTimestamp = require("../../helpers/convertSecondsToHoursTimestamp")
+const { version } = require("../../package.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("info")
 		.setDescription("View information about BOTrased"),
 	async execute(interaction) {
+		pages = []
 		const owner = await interaction.client.users.cache.get("273140563971145729")
-		const embed = new EmbedBuilder()
+		let dbStatus
+		await sequelize.authenticate().then(() => {
+			dbStatus = true
+		})
+			.catch(() => {
+				dbStatus = false
+			})
+		const connectionDict = {true: "Online", false: "Unavailable"}
+		pages.push(new EmbedBuilder()
 			.setColor(Colors.DarkPurple)
 			.setTitle(interaction.client.user.username)
 			.setDescription("A Discord Bot written entirely in JavaScript.")
@@ -19,8 +31,21 @@ module.exports = {
 				{name: "Vote for BOTrased", value: "[Top.gg](https://top.gg/bot/541373621873016866/vote)"},
 				{name: "Creator and Maintainer", value: `${owner.username}#${owner.discriminator}`}
 			)
+		)
+		pages.push(
+			new EmbedBuilder()
+			.setTitle("Technical information about BOTrased")
+			.setThumbnail(interaction.client.user.avatarURL())
+			.addFields(
+				{name: "Version:", value: version},
+				{name: "Ping:", value: `${interaction.client.ws.ping}ms`},
+				{name: "Database Status:", value: `${connectionDict[dbStatus]}`},
+				{name: "Errors Encountered Since Boot:", value: `${errorCount}`},
+				{name: "Current Uptime:", value: `${convertSecondsToHoursTimestamp(process.uptime())}`},
+				{name: "Maintenance Mode:", value: `${maintenanceMode ? "Enabled" : "Disabled"}`}
+			)
+		)
         
-		await interaction.editReply({embeds: [embed]})
-		//note to future self: don't add ping or any other sort of diagnostic data. This should be in a status command of some sort.
+		paginationEmbed(interaction, pages)
 	},
 }

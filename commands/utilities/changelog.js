@@ -31,7 +31,6 @@ module.exports = {
 				}
 				j++
 			}
-			//console.log(embedTitle, embedBody)
 			var embed = new EmbedBuilder()
 				.setColor("DARK_PURPLE")
 				.setTitle(embedTitle)
@@ -40,7 +39,6 @@ module.exports = {
 			pages.push(embed)
 		}
         
-		//console.log(pages)
 		const buttonList = [
 			new ButtonBuilder()
 				.setCustomId("previousbtn")
