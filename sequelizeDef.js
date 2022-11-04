@@ -53,6 +53,15 @@ async function defineTables(){
             type: Sequelize.TINYINT(1),
             defaultValue: 0,
             allowNull: false
+        },
+        autoRoleEnabled: {
+            type: Sequelize.TINYINT(1),
+            defaultValue: 0,
+            allowNull: false
+        },
+        autoRoleId: {
+            type: Sequelize.CHAR(19),
+            allowNull: true
         }
     }, {
         timestamps:false
