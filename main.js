@@ -120,6 +120,7 @@ client.on("interactionCreate", async interaction => {
 			.then(async (error) => {
 				if (config.environment !== "dev") await interaction.editReply(`:x: **BOTrased encountered an unexpected error while fulfilling this request.**\nPlease let the developer, Thoughts3rased#3006 know and quote error code ${errorId}.`)
 				else await interaction.editReply(`:x: An unexpected error occurred. Full stack trace: \`\`\`${error}\`\`\``)
+				console.error(error)
 			})
 			.catch(async (error) => {
 				console.error(error)
@@ -173,13 +174,16 @@ client.on("messageCreate", async message => {
 })
 
 client.on("guildMemberAdd", async member => {
-	console.log("Member joined!")
-	
 	server = await global.serverRecords.findOne({where: {serverID: member.guild.id}})
 
-	if (server.get("lockdownMode") === 0) return
+	if (server.get("lockdownMode") === 1) return await member.kick("Lockdown mode kick")
 
-	await member.kick("Lockdown mode kick")
+	if (server.get("autoRoleEnabled") === 1 && server.get("autoRoleId") !== null) {
+		await member.roles.add(server.get("autoRoleId"))
+		.catch(async e => {
+			console.error(e)
+		})
+	}
 })
 
 //Logging errors
