@@ -1,7 +1,10 @@
-Changelog for XX/XX/XXXX - V 2.9.0
+Changelog for 12/11/2022 - V 2.9.0
 
-**__FEATURED CHANGES__**:
-+ AUTOROLES ARE HERE! You can now have BOTrased automatically assign new users a role. Use /serversettings autorole to set this up for new users!
+**__FEATURED CHANGE__**:
+AUTOROLES ARE HERE! You can now have BOTrased automatically assign new users a role. Use /serversettings autorole to set this up for new users!
+
+**__NEW COMMANDS__**:
++ Added 8ball commands, probably used for asking if you/a friend is gay
 
 **__COMMAND CHANGES__**:
 + added /serversettings autorole enable

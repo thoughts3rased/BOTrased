@@ -51,10 +51,10 @@ module.exports = {
 				.addSubcommand(subcommand => 
 					subcommand
 						.setName("enable")
-						.setDescription("Determines whether autorole is enabled or not.")
+						.setDescription("Turn autorole on or off")
 						.addBooleanOption(option => 
 							option
-								.setName("state")
+								.setName("enabled")
 								.setDescription("Whether autorole is on or off")
 								.setRequired(true)))
 				.addSubcommand(subcommand => 
@@ -97,29 +97,34 @@ module.exports = {
 			}
 		}
 		else {
-			switch (interaction.options.getSubcommand()){
-				case "enable":
-					if (!serverRecord.get("autoRoleId")) return await interaction.editReply(":x: You can't enable autorole until you've set a role for it. Please set one with `/serversettings autorole role`.")
-					
-					await serverRecord.update({autoRoleEnabled: interaction.options.getBoolean("state") ? 1 : 0}, {where: {serverID: `${interaction.guild.id}`}})
-					.catch(async error => {
-						console.error(error)
-						await reportError(errorStack = error.stack, )
-						return await interaction.editReply(":x: An error occurred while saving your change.")
-					})
-					.then(async () => {
-						return await interaction.editReply(`Autorole is now ${interaction.options.getBoolean("state") === true ? "**ENABLED**" : "**DISABLED**"}.`)
-					})
+			switch(interaction.options.getSubcommandGroup()){
+				case "autorole":
+					switch (interaction.options.getSubcommand()){
+						case "enable":
+							if (!serverRecord.get("autoRoleId")) return await interaction.editReply(":x: You can't enable autorole until you've set a role for it. Please set one with `/serversettings autorole role`.")
+							
+							await serverRecord.update({autoRoleEnabled: interaction.options.getBoolean("enabled") ? 1 : 0}, {where: {serverID: `${interaction.guild.id}`}})
+							.catch(async error => {
+								console.error(error)
+								await reportError(errorStack = error.stack, )
+								return await interaction.editReply(":x: An error occurred while saving your change.")
+							})
+							.then(async () => {
+								return await interaction.editReply(`Autorole is now ${interaction.options.getBoolean("enabled") === true ? "**ENABLED**" : "**DISABLED**"}.`)
+							})
+							break
+						case "setrole":
+							await serverRecord.update({autoRoleId: interaction.options.getRole("targetrole").id}, {where: {serverID: `${interaction.guild.id}`}})
+							.catch(async () => {
+								return await interaction.editReply(":x: An error occurred while setting the autorole.")
+							})
+							.then(async () => {
+								return await interaction.editReply(`New users will now be given the ${interaction.options.getRole("targetrole")} role.`)
+							})
+					}
 					break
-				case "setrole":
-					await serverRecord.update({autoRoleId: interaction.options.getRole("targetrole").id}, {where: {serverID: `${interaction.guild.id}`}})
-					.catch(async () => {
-						return await interaction.editReply(":x: An error occurred while setting the autorole.")
-					})
-					.then(async () => {
-						return await interaction.editReply(`New users will now be given the ${interaction.options.getRole("targetrole")} role.`)
-					})
 			}
+
 		}
 	},
 }

@@ -174,6 +174,7 @@ client.on("messageCreate", async message => {
 })
 
 client.on("guildMemberAdd", async member => {
+	await global.userRecords.findOrCreate({where: {userID: member.id}, defaults: {userID: member.id}})
 	server = await global.serverRecords.findOne({where: {serverID: member.guild.id}})
 
 	if (server.get("lockdownMode") === 1) return await member.kick("Lockdown mode kick")
@@ -183,6 +184,13 @@ client.on("guildMemberAdd", async member => {
 		.catch(async e => {
 			console.error(e)
 		})
+	}
+
+	if (server.get("eventLogEnabled") === 1 && server.get("eventLogChannelId") !== null) {
+		channel = await client.channels.fetch(server.get("eventLogChannelId"))
+			.then(async channel => {
+				await channel.send()
+			})
 	}
 })
 
