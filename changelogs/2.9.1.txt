@@ -1,0 +1,5 @@
+Changelog for 19/11/2022 - V 2.9.1
+
+**__BUG FIXES__**:
++ Fixed visual issue in /info where the uptime would start with "false"
++ Fixed issue where BOTrased would report being in maintenance mode in its status after maintenance mode is disabled

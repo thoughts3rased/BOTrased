@@ -21,7 +21,7 @@ module.exports = {
                 await interaction.client.user.setPresence({ activities: [{ name: "Maintenance mode enabled" }], status: "idle" })
                 break
             case "false":
-                await interaction.client.user.setPresence({ status: "online" })
+                await interaction.client.user.setPresence({ activities: [], status: "online" })
         }
 	}
 }

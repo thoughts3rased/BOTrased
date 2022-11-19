@@ -14,8 +14,8 @@ const convertSecondsToHoursTimestamp = secs => {
     outputString = ""
 
     if (weeks > 0) outputString += `${weeks} week${weeks > 1 ? "s" : ""}`
-    if (days > 0) outputString += `${outputString.length > 0 && ','} ${days} day${days > 1 ? "s" : ""}`
-    if (hours > 0) outputString += `${outputString.length > 0 && ','} ${hours} hour${hours > 1 ? "s" : ""}`
+    if (days > 0) outputString += `${outputString.length > 0 ? ',' : ''} ${days} day${days > 1 ? "s" : ""}`
+    if (hours > 0) outputString += `${outputString.length > 0 ? ',' : ''} ${hours} hour${hours > 1 ? "s" : ""}`
     if (minutes > 0 || hours > 0) outputString += `${outputString.length > 0 ? ", " : ""}${minutes} minute${minutes !== 1 ? "s" : ""}`
     outputString += `${outputString.length > 0 ? ", " : ""}${seconds} second${seconds !== 1 ? "s" : ""}`
     return outputString
