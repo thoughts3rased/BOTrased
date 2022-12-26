@@ -16,7 +16,7 @@ Some guidelines for contributing:
 # Running BOTrased
 To run BOTrased you will need NodeJS and NPM. If you do not know what these words mean, you probably shouldn't be trying to run the bot.
 
-Make sure to install all required packages, and you'll need a MySQL server instance with SELECT, INSERT, ALTER, CREATE and DROP priveledges. Sequelize will automatically validate and create the tables on boot, so don't worry about having to create the correct tables.
+Make sure to install all required packages, and you'll need a MySQL server instance with SELECT, INSERT, ALTER, CREATE and DROP privileges. Sequelize will automatically validate and create the tables on boot, so don't worry about having to create the correct tables.
 
 Create a config.js file in the root of the working directory using the config-template.js as a base. You'll need a Discord bot token and MySQL credentials at the very least.
 
