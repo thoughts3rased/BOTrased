@@ -12,6 +12,6 @@ module.exports = {
                 .setRequired(true)),
 	async execute(interaction) {
 		const answers = fs.readFileSync("./assets/games/8ball/answers.txt").toString().split("\n")
-        return await interaction.editReply(`:question: **${interaction.member.nickname} asks**: ${interaction.options.getString("question")}\n\n:8ball: The 8 ball says: ${answers[Math.floor(Math.random() * answers.length)]}`)
+        return await interaction.editReply(`:question: **${interaction.member.nickname ? interaction.member.nickname : interaction.member.userName} asks**: ${interaction.options.getString("question")}\n\n:8ball: The 8 ball says: ${answers[Math.floor(Math.random() * answers.length)]}`)
 	},
 }

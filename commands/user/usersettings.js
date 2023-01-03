@@ -82,12 +82,13 @@ module.exports = {
 			break
 		case "show":
 			const states = {1: "Enabled", 0: "Disabled"}
+			const userColour = userRecord.get("embedColour")
 			const embed = new EmbedBuilder()
 				.setColor(Colors.LightGrey)
 				.setTitle(`${interaction.user.username}'s settings configuration`)
 				.addFields(
 					{name: "Level Up Messages:", value: `${states[userRecord.get("levelUpMessage")]}`},
-					{name: "Profile Colour Hex Value:", value: `#${userRecord.get("embedColour").toUpperCase()}`}
+					{name: "Profile Colour Hex Value:", value: userColour != null ? `#${userColour.toUpperCase()}` : "None set"}
                         
 				)
 			if (userRecord.get("message")){
