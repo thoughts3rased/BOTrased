@@ -1,0 +1,8 @@
+Changelog for 03/01/2023 - V 2.10.0
+
+**__BUG FIXES__**:
++ Displaying user settings no longer causes an uncaught exception if you don't have a profile colour set
++ The 8-ball will no longer call you "null" if you do not have a nickname set
+
+**__COMMAND CHANGES__**:
++ Leaderboards now allow you to switch between viewing the server and global leaderboards

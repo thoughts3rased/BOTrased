@@ -6,7 +6,7 @@ const config = require("../../config.json")
 
 const commands = []
 
-const commandFolders = fs.readdirSync("./commands", { withFileTypes: true }).filter(folder => folder?.isDirectory() && folder?.name !== "owner")
+const commandFolders = fs.readdirSync("./commands", { withFileTypes: true }).filter(folder => folder?.isDirectory())
 
 commandFolders.forEach(folder => {
     
@@ -28,7 +28,7 @@ const rest = new REST({ version: "10" }).setToken(config.discord.token);
 (async () => {
 	try {
 		await rest.put(
-			Routes.applicationGuildCommands("803399539557400657", "358708716599508993"),
+			Routes.applicationGuildCommands("803399539557400657", config.discord.ownerGuildId),
 			{ body: commands },
 		)
 

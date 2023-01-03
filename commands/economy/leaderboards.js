@@ -1,5 +1,7 @@
 const { EmbedBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require("discord.js")
 const paginationEmbed = require("../../helpers/paginationEmbed")
+const { Sequelize } = require("sequelize")
+const {in: opIn} = Sequelize.Op;
 
 
 module.exports = {
@@ -13,11 +15,35 @@ module.exports = {
 				.addChoices(
 					{ name: "credits", value: "money" },
 					{ name: "experience", value: "exp" }
+				))
+		.addStringOption(option =>
+			option.setName("scope")
+				.setRequired(true)
+				.setDescription("Whether to display global or server leaderboards")
+				.addChoices(
+					{ name: "server", value: "server" },
+					{ name: "global", value: "global" }
 				)),
 	async execute(interaction) {
+		const leaderboardType = interaction.options.getString("scope") ?? "server"
+		let leaderboardDataResult
+		let guildUsers = {}
 		//get the top 100 records from the database
-		const leaderboardDataResult = await global.userRecords.findAll({order: [[interaction.options.getString("category"), "DESC"]]}, {limit: 100}).then((leaderboardData) => {return leaderboardData})
-        
+		if (leaderboardType == "global"){
+			leaderboardDataResult = await global.userRecords.findAll({order: [[interaction.options.getString("category"), "DESC"]]}, {limit: 100}).then((leaderboardData) => {return leaderboardData})
+		}
+		else {
+			await interaction.guild.members.fetch().then(fetchedMembers => {
+				fetchedMembers.forEach(user => {
+					guildUsers = {
+						...guildUsers,
+						[user.id]: user					
+					}
+				})
+			})
+			leaderboardDataResult = await global.userRecords.findAll({order: [[interaction.options.getString("category"), "DESC"]], where: { userID: { [opIn]: Object.keys(guildUsers) } }}, {limit: 100}).then((leaderboardData) => {return leaderboardData})
+		}
+
 		//map these records into dicts in a new const
 		const leaderboardData = leaderboardDataResult.map(result => result.dataValues)
         
@@ -30,10 +56,16 @@ module.exports = {
 		const titleDict = {"money": "credits", "exp": "experience"} //used for changing the title of the embeds based on the type of leaderboard requested by the user
 
 		for (var i = 0; i < leaderboardData.length - 1 && i < 100; i++){
+			let currentUser
 			// Fetch all users in the database
-			let currentUser = await interaction.client.users.fetch(leaderboardData[i].userID)
+			if (leaderboardType == "global"){
+				currentUser = await interaction.client.users.fetch(leaderboardData[i].userID)
+			}
+			else {
+				currentUser = guildUsers[leaderboardData[i].id]
+			}
 			//push the formatted line to the leaderboardStringData array
-			leaderboardStringData.push(`${i+1}. ${currentUser.username}#${currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
+			leaderboardStringData.push(`${i+1}. ${currentUser.nickname ?? currentUser.username}#${currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
 		}
         
 		//this loop splits the leaderboardStringData into an array of 10 arrays
