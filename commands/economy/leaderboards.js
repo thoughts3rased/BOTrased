@@ -62,7 +62,7 @@ module.exports = {
 				currentUser = await interaction.client.users.fetch(leaderboardData[i].userID)
 			}
 			else {
-				currentUser = guildUsers[leaderboardData[i].id]
+				currentUser = guildUsers[leaderboardData[i].userID]
 			}
 			//push the formatted line to the leaderboardStringData array
 			leaderboardStringData.push(`${i+1}. ${currentUser?.nickname ?? currentUser.username}#${currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
