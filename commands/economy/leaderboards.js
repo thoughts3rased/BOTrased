@@ -65,7 +65,12 @@ module.exports = {
 				currentUser = guildUsers[leaderboardData[i].userID]
 			}
 			//push the formatted line to the leaderboardStringData array
-			leaderboardStringData.push(`${i+1}. ${currentUser?.nickname ?? currentUser.user.username}#${currentUser?.discriminator == undefined ? currentUser.user.discriminator : currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
+			if (leaderboardType == "server"){
+				leaderboardStringData.push(`${i+1}. ${currentUser?.nickname ?? currentUser.user.username}#${currentUser?.discriminator == undefined ? currentUser.user.discriminator : currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
+			}
+			else {
+				leaderboardStringData.push(`${i+1}. ${currentUser.username}#${currentUser.discriminator} - ${leaderboardData[i][interaction.options.getString("category")]}`)
+			}
 		}
         
 		//this loop splits the leaderboardStringData into an array of 10 arrays
