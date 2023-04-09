@@ -197,6 +197,32 @@ async function defineTables(){
         timestamps: false,
         freezeTableName: true
     })
+
+    global.changelogTable = await global.sequelize.define("changelogs", {
+        changelogId: {
+            type: Sequelize.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+            allowNull: false
+        },
+        version: {
+            type: Sequelize.STRING(50),
+            allowNull: false
+        },
+        date: {
+            type: Sequelize.DATEONLY,
+            allowNull: false,
+            defaultValue: Date.now()
+        },
+        body: {
+            type: Sequelize.STRING(2000),
+            allowNull: false
+        }
+    },
+    {
+        timestamps: false,
+        freezeTableName: true
+    })
     
     //Setting up DB table relations
     global.userRecords.hasMany(global.inventoryRecords, {foreignKey: "userID"})
@@ -214,6 +240,7 @@ async function syncTables(){
 	await global.itemRecords.sync()
 	await global.commandRecords.sync()
     await global.errorTable.sync()
+    await global.changelogTable.sync()
 }
 
 module.exports = {
