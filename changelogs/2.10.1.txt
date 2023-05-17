@@ -1,4 +1,4 @@
-Changelog for XX/01/2023 - V 2.10.1
+Changelog for 07/01/2023 - V 2.10.1
 
 **__BUG FIXES__**:
 + The global leaderboard no longer crashes when attempting to view it
