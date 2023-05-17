@@ -1,0 +1,6 @@
+Changelog for 17/05/2023 - V 2.10.2
+
+**__BUG FIXES__**:
++ BOTrased no longer crashes when using the pagination buttons on embeds
++ /8ball will no longer call users without a nickname "undefined"
++ 
